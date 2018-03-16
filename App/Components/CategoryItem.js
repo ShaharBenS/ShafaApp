@@ -10,7 +10,7 @@ import {
 const percent = 0.4;
 const window = Dimensions.get('window');
 const renderedHeight = percent*window.height;
-const radius = 5;
+const radius = 10;
 
 export class CategoryItem extends Component<props> {
     render() {
@@ -26,28 +26,32 @@ export class CategoryItem extends Component<props> {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 0,
-        marginTop: 5,
+        flex: 1,
+        marginTop: 3,
         marginRight: 5,
         marginLeft: 5,
         marginBottom: 0,
         height:renderedHeight,
-        backgroundColor: '#FF000000',
     },
     image: {
         width:'100%',
-        height:'80%',
+        height: '80%',
         resizeMode:'cover',
         borderRadius: radius,
         borderBottomRightRadius: 0,
         borderBottomLeftRadius: 0,
     },
     title: {
-        fontSize: 30,
+        fontSize: 25,
         textAlign: 'center',
-        padding: 5,
+        padding: 10,
         borderBottomRightRadius: radius,
         borderBottomLeftRadius: radius,
-        backgroundColor: '#DDDDDD',
+        backgroundColor: '#FFFFFF',
+        color: '#222222',
+        textShadowColor: '#AAAAAA',
+        textShadowOffset: {width: -1, height: 1},
+        textShadowRadius: 10
+
     }
 });
