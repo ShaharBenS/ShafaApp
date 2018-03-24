@@ -12,7 +12,7 @@ import {
 export default class Chats extends Component<Props> {
 
     static navigationOptions = {
-        tabBarIcon: () => <Image source={require('../icons/pngs/categories_icon_gry.png')} style={styles.icon}/>
+        tabBarIcon: () => <Image source={require('../icons/pngs/categories_icon_gry.png')} style={{width:24, height:24, resizeMode:'cover'}}/>
 
     };
 

@@ -7,10 +7,10 @@ import {
     Dimensions
 } from 'react-native';
 
-const percent = 0.4;
+const percent = 0.5;
 const window = Dimensions.get('window');
 const renderedHeight = percent*window.height;
-const radius = 10;
+const radius = 3;
 
 export class CategoryItem extends Component<props> {
     render() {
@@ -38,20 +38,14 @@ const styles = StyleSheet.create({
         height: '80%',
         resizeMode:'cover',
         borderRadius: radius,
-        borderBottomRightRadius: 0,
-        borderBottomLeftRadius: 0,
     },
     title: {
-        fontSize: 25,
-        textAlign: 'center',
+        fontSize: 30,
+        textAlign: 'right',
         padding: 10,
-        borderBottomRightRadius: radius,
-        borderBottomLeftRadius: radius,
-        backgroundColor: '#FFFFFF',
-        color: '#222222',
-        textShadowColor: '#AAAAAA',
-        textShadowOffset: {width: -1, height: 1},
-        textShadowRadius: 10
+        fontFamily: 'OpenSansHebrewCondensed-Regular',
+        color: '#4a4a4a',
+
 
     }
 });

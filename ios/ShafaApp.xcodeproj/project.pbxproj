@@ -49,6 +49,8 @@
 		B48E37F4A9D242E5976D7F4C /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1683B2322CDC428C8413B296 /* rubicon-icon-font.ttf */; };
 		6BE19B084D7349F08790F17D /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 172E602FE582494583C142EF /* SimpleLineIcons.ttf */; };
 		6AFCBAD9BCA4468D89301600 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 556142A8B93548CC9122D1F4 /* Zocial.ttf */; };
+		E29332D280AF44788867521A /* OpenSansHebrewCondensed-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 64FC7018459D4996AF7C5BB8 /* OpenSansHebrewCondensed-Light.ttf */; };
+		116EF14727154EA0B30E3901 /* OpenSansHebrewCondensed-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 28A704807B56452099554AE5 /* OpenSansHebrewCondensed-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -312,6 +314,8 @@
 		1683B2322CDC428C8413B296 /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		172E602FE582494583C142EF /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; name = "SimpleLineIcons.ttf"; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		556142A8B93548CC9122D1F4 /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		64FC7018459D4996AF7C5BB8 /* OpenSansHebrewCondensed-Light.ttf */ = {isa = PBXFileReference; name = "OpenSansHebrewCondensed-Light.ttf"; path = "../assets/fonts/OpenSansHebrewCondensed-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		28A704807B56452099554AE5 /* OpenSansHebrewCondensed-Regular.ttf */ = {isa = PBXFileReference; name = "OpenSansHebrewCondensed-Regular.ttf"; path = "../assets/fonts/OpenSansHebrewCondensed-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -582,6 +586,8 @@
 				1683B2322CDC428C8413B296 /* rubicon-icon-font.ttf */,
 				172E602FE582494583C142EF /* SimpleLineIcons.ttf */,
 				556142A8B93548CC9122D1F4 /* Zocial.ttf */,
+				64FC7018459D4996AF7C5BB8 /* OpenSansHebrewCondensed-Light.ttf */,
+				28A704807B56452099554AE5 /* OpenSansHebrewCondensed-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -989,6 +995,8 @@
 				B48E37F4A9D242E5976D7F4C /* rubicon-icon-font.ttf in Resources */,
 				6BE19B084D7349F08790F17D /* SimpleLineIcons.ttf in Resources */,
 				6AFCBAD9BCA4468D89301600 /* Zocial.ttf in Resources */,
+				E29332D280AF44788867521A /* OpenSansHebrewCondensed-Light.ttf in Resources */,
+				116EF14727154EA0B30E3901 /* OpenSansHebrewCondensed-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

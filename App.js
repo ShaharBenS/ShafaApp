@@ -20,8 +20,9 @@ import ItemsGallery from "./App/Screens/ItemsGallery";
 
 const App = TabNavigator(
     {
-        Categories: { screen: Categories },
+
         ItemsGallery: { screen: ItemsGallery },
+        Categories: { screen: Categories },
         Chats: { screen: Chats },
         Favorites: { screen: Favorites },
         Profile: {screen: Profile}
@@ -34,10 +35,11 @@ const App = TabNavigator(
                 labelColor: '#000000',
                 rippleColor: 'purple',
                 tabs: {
-                    Categories: {
+
+                    ItemsGallery: {
                         barBackgroundColor: '#FFFFFF'
                     },
-                    ItemsGallery: {
+                    Categories: {
                         barBackgroundColor: '#FFFFFF'
                     },
                     Chats: {

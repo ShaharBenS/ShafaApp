@@ -9,10 +9,7 @@ import {
 } from 'react-native';
 
 export class GalleyItem extends Component<props> {
-    static navigationOptions = {
-        labelStyle: { display: 'none'},
-        tabBarIcon: () => <Image source={require('../icons/pngs/categories_icon_gry.png')} style={styles.icon}/>
-    };
+
     render() {
         let img = require('../Images/placeholder.jpg');
         let logo = require('../Images/loginButton_he.png');
@@ -21,20 +18,22 @@ export class GalleyItem extends Component<props> {
             <View id={'container'} style={styles.container}>
                 <View id={'upper'} >
                     <Image id={'item'} source={img} style={styles.itemPic}/>
+                    <TouchableOpacity activeOpacity={0.5} style={styles.profilePicTouchable}>
                     <Image id={'profile'} source={logo} style={styles.profilePic}/>
+                    </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.5} style={styles.like}>
                         <Image id={'like'} source={like} />
                     </TouchableOpacity>
                 </View>
                 <View id={'info'} style={styles.textualInfo}>
-                    <Text numberOfLines={2} id={'itemName'} style={styles.name}>This is a large example of a name text</Text>
+                    <Text numberOfLines={2} id={'itemName'} style={styles.name}>זהו שם מאוד מאוד ארוך למוצר</Text>
                     <View id={'infoSpec'} style={styles.infoSpec}>
                         <Text style={styles.simpleFontSize}>
-                            <Text id={'company'} >ZARA</Text>
-                            <Text style={styles.delimiter}>•</Text>
-                            <Text id={'size'} >XL</Text>
-                            <Text style={styles.delimiter}>•</Text>
-                            <Text id={'distance'} >2 KM</Text>
+                            <Text id={'company'} >זארה</Text>
+                            <Text> • </Text>
+                            <Text id={'distance'}>2 קמ</Text>
+                            <Text> • </Text>
+                            <Text id={'size'} >L</Text>
                         </Text>
                     </View>
                     <Text id={'price'} style={styles.price}>120$</Text>
@@ -47,29 +46,23 @@ export class GalleyItem extends Component<props> {
     }
 }
 
-const percentHeight = 0.6;
+const percentHeight = 0.55;
 const percentWidth = 0.5;
 const window = Dimensions.get('window');
 const renderedHeight = percentHeight*window.height;
 const renderedWidth = percentWidth*window.width;
 const imageSize = renderedWidth-10;
-const profileImageSize = imageSize/3;
+const profileImageSize = imageSize/3.5;
 
-const colorBlack = '#000000';
+const colorBlack = '#4a4a4a';
 const colorWhite = '#FFFFFF';
 
 
 const styles = StyleSheet.create({
-    icon: {
-        width:24,
-        height:24,
-        resizeMode:'cover',
-        marginTop: 10,
 
-    },
     container: {
         flex: 1,
-        marginTop: 5,
+        marginTop: 15,
         marginRight: 5,
         marginLeft: 5,
         position: 'relative',
@@ -88,15 +81,19 @@ const styles = StyleSheet.create({
     },
 
     profilePic:{
-        position: 'absolute',
-        alignSelf: 'center',
-        top: (imageSize*0.82),
         borderColor: colorWhite,
         borderRadius: 100,
         borderWidth: 2,
         width: profileImageSize,
         height: profileImageSize,
         resizeMode:'cover',
+    },
+    profilePicTouchable:{
+        position: 'absolute',
+        alignSelf: 'center',
+        top: (imageSize*0.82),
+
+
     },
     like: {
         position: 'absolute',
@@ -109,11 +106,10 @@ const styles = StyleSheet.create({
         position: 'absolute',
         alignSelf: 'center',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        top: (imageSize+profileImageSize/2.),
+        top: (imageSize+profileImageSize/4 ),
     },
-    simpleFontSize: {  fontSize:14 },
-    name: { padding:10, textAlign: 'center', fontSize:14, color: '#333333' },
+    simpleFontSize: {  fontSize:18, fontFamily: 'OpenSansHebrewCondensed-Light'},
+    name: { padding:10, textAlign: 'center', fontSize:16, color: '#333333' },
     infoSpec: {
         flex: 1,
         alignItems: 'center',
@@ -121,9 +117,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginRight:10,
         marginLeft:10,
+        marginTop: -5
     },
-    delimiter: {marginRight:5, marginLeft: 5},
-    price: {marginTop: 5, color: colorBlack, fontSize:16,},
+    price: {marginTop: 5, color: colorBlack, fontSize:18, fontFamily: 'OpenSansHebrewCondensed-Regular' },
     buyButton: {
         borderColor: colorBlack,
         borderWidth: 1,
@@ -132,6 +128,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 10,
     },
-    buyText: {fontSize:16, color:colorBlack, margin: 5},
+    buyText: {fontSize:18, color:colorBlack, margin: 5, fontFamily: 'OpenSansHebrewCondensed-Regular',},
 
 });
