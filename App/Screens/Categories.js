@@ -13,13 +13,17 @@ import {
     Dimensions,
 
 } from 'react-native';
-import {CategoryItem} from './App/Components/CategoryItem';
+import {CategoryItem} from '../Components/CategoryItem';
 
 export default class Categories extends Component<Props> {
 
+    static navigationOptions = {
+        labelStyle: { display: 'none'},
+        tabBarIcon: () => <Image source={require('../icons/pngs/categories_icon_gry.png')} style={styles.icon}/>
+    };
 
     render() {
-        let pic = require('./App/Images/placeholder.jpg');
+        let pic = require('../Images/placeholder.jpg');
         let name = "Category Name";
         let data=[{pict:pic,namet:name, id:'0'},
             {pict:pic,namet:name, id:'1'},
@@ -36,7 +40,7 @@ export default class Categories extends Component<Props> {
                     data={data}
                     renderItem={({item})=><CategoryItem categoryImagePath={item.pict} categoryName={item.namet}/>}
                     keyExtractor={item => item.id}
-                    ListHeaderComponent={<Image source={require('./App/Images/logoPlaceholder.png')} style={styles.logo}/>}
+                    ListHeaderComponent={<Image source={require('../Images/logoPlaceholder.png')} style={styles.logo}/>}
                 />
             </View>
         );
@@ -58,6 +62,13 @@ const styles = StyleSheet.create({
         height: renderedHeight,
         margin: 10,
         alignSelf:'center'
+
+    },
+    icon: {
+        width:24,
+        height:24,
+        resizeMode:'cover',
+        marginTop: 10,
 
     },
 });
