@@ -47,7 +47,7 @@ export default class ItemsGallery extends Component<Props> {
                 <View style={styles.lineDelimiter}/>
 
                 <FlatList
-                    style={{marginTop:0}}
+                    style={{marginTop:-0}}
                     numColumns={2}
                     data={data}
                     renderItem={({item})=><GalleyItem/> }
