@@ -11,6 +11,7 @@ import {
     FlatList,
     Image,
     Dimensions,
+    Alert,
 
 } from 'react-native';
 import {CategoryItem} from '../Components/CategoryItem';
@@ -33,6 +34,7 @@ export default class Categories extends Component<Props> {
             {pict:pic,namet:name, id:'5'},
             {pict:pic,namet:name, id:'6'},
             {pict:pic,namet:name, id:'7'},];
+        Alert.alert("User is:",JSON.stringify(global.user));
         return (
             <View style={styles.container}>
 
