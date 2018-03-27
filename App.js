@@ -17,44 +17,10 @@ import Profile from "./App/Screens/Profile";
 import ItemsGallery from "./App/Screens/ItemsGallery";
 
 
-
-const App = TabNavigator(
-    {
-
-        ItemsGallery: { screen: ItemsGallery },
-        Categories: { screen: Categories },
-        Chats: { screen: Chats },
-        Favorites: { screen: Favorites },
-        Profile: {screen: Profile}
-    },
-    {
-        tabBarComponent: NavigationComponent,
-        tabBarPosition: 'bottom',
-        tabBarOptions: {
-            bottomNavigationOptions: {
-                labelColor: '#000000',
-                rippleColor: 'purple',
-                tabs: {
-
-                    ItemsGallery: {
-                        barBackgroundColor: '#FFFFFF'
-                    },
-                    Categories: {
-                        barBackgroundColor: '#FFFFFF'
-                    },
-                    Chats: {
-                        barBackgroundColor: '#FFFFFF'
-                    },
-                    Favorites: {
-                        barBackgroundColor: '#FFFFFF'
-                    },
-                    Profile: {
-                        barBackgroundColor: '#FFFFFF'
-                    }
-                }
-            }
-        }
-    });
+let App = SwitchNavigator({
+    loginScreen: {screen: FacebookLogin},
+    mainScreen: {screen: MainScreen}},
+);
 
 export default App;
 AppRegistry.registerComponent('App', () => App);

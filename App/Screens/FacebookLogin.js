@@ -6,20 +6,23 @@
 
 import React, {Component} from 'react';
 import {
-    Platform,
     StyleSheet,
     Text,
     View,
     Alert,
     Image,
-    Dimensions
+    Dimensions,
+    ActivityIndicator
 } from 'react-native';
 
 import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
 
+let loginController = require('../Controllers/LoginController');
+
 let screenSize = Dimensions.get('window');
 let buttonSize = {height: 0.11, width: 0.85};
-let buttonPosition = {top: 0.7,left:(1-buttonSize.width)/2};
+let buttonPosition = {top: 0.7, left: (1 - buttonSize.width) / 2};
+let activityIndicatorPosition = {top: buttonPosition.top + buttonSize.height + 0.02};
 let onClickColor = '#f2f0ff';
 
 const styles = StyleSheet.create({
@@ -39,6 +42,11 @@ const styles = StyleSheet.create({
         position: 'absolute',
         marginTop: screenSize.height * buttonPosition.top,
         marginLeft: screenSize.width * buttonPosition.left
+    },
+    activityIndicatorView: {
+        marginTop: screenSize.height * activityIndicatorPosition.top,
+        flexDirection: 'row',
+        justifyContent: 'center'
     }
 });
 
@@ -49,14 +57,18 @@ let buttonView = <Image source={loginButtonBackground}
                         style={styles.loginButtonImage}/>;
 
 
-export default class FacebookLogin extends Component<Props> {
-    constructor(props) {
+export default class FacebookLogin extends Component<Props>
+{
+    constructor(props)
+    {
         super(props);
-        this.state = {user: null}
+        this.state = {user: null, shouldShowLoading: false};
     }
 
-    render() {
+    render()
+    {
         let _this = this;
+        const {navigate} = this.props.navigation;
         return (
             <View>
                 <Image source={background} style={styles.backgroundImage}/>
@@ -65,37 +77,100 @@ export default class FacebookLogin extends Component<Props> {
                         onClickColor={onClickColor}
                         containerStyle={{}}
                         buttonView={buttonView}
-                        ref={(fbLogin) => {
+                        ref={(fbLogin) =>
+                        {
                             this.fbLogin = fbLogin
                         }}
                         permissions={["email", "user_friends"]}
                         loginBehavior={FBLoginManager.LoginBehaviors.Native}
-                        onLogin={function (data) {
-                            Alert.alert('Logged In!',JSON.stringify(data));
-                            _this.setState({user: data.credentials});
+                        onLogin={function (data)
+                        {
+                            _this.setState(previousState =>
+                            {
+                                return {user: data.credentials.user, previousStateLoading: true}
+                            });
+                            let userPromise = loginController.addUser(data);
+                            userPromise.then(response =>
+                            {
+                                response.then(data =>
+                                {           //TODO: data.alreadyExists check if true and add a welcome back msg.
+                                    if (data.output === "SUCCESS")
+                                    {
+                                        global.user = data.user;
+                                        navigate('mainScreen');
+                                    }
+                                    else
+                                    {
+                                        Alert.alert("Error 1")
+                                    }
+                                })
+                            }).catch((err =>
+                            {
+                                _this.setState(previousState =>
+                                {
+                                    return {shouldShowLoading: false, user: previousState.user}
+                                });
+                                Alert.alert('Error 2');
+                                console.log(err);
+                            }));
                         }}
-                        onLogout={function () {
-                            Alert.alert("Logged out.");
-                            _this.setState({user: null});
+                        onLogout={function ()
+                        {
+                            _this.setState({user: null, shouldShowLoading: false});
+                            navigate('loginScreen')
                         }}
-                        onLoginFound={function (data) {
-                            Alert.alert("Existing login found.",JSON.stringify(data));
-                            _this.setState({user: data.credentials});
+                        onLoginFound={function (data)
+                        {
+                            _this.setState(previousState =>
+                            {
+                                return {user: data.credentials.user, previousStateLoading: true}
+                            });
+                            let userPromise = loginController.getUser(data);
+                            userPromise.then((response) =>
+                            {
+                                response.json().then(data =>
+                                {
+                                    if (data.output === "SUCCESS")
+                                    {
+                                        global.user = data.user;
+                                        navigate('mainScreen');
+                                    }
+                                    else
+                                    {
+                                        Alert.alert("Error 3")
+                                    }
+                                });
+                            })
+                                .catch((err) =>
+                                {
+                                    _this.setState(previousState =>
+                                    {
+                                        return {shouldShowLoading: false, user: previousState.user}
+                                    });
+                                    console.log(err);
+                                    Alert.alert("Error 4");
+                                });
                         }}
-                        onLoginNotFound={function () {
-                            Alert.alert("No user logged in.");
-                            _this.setState({user: null});
+                        onLoginNotFound={function ()
+                        {
+                            _this.setState({user: null, shouldShowLoading: false});
                         }}
-                        onError={function (data) {
-                            Alert.alert("ERROR",JSON.stringify(data));
+                        onError={function (data)
+                        {
+                            Alert.alert("ERROR", JSON.stringify(data));
                         }}
-                        onCancel={function () {
+                        onCancel={function ()
+                        {
                             Alert.alert("User cancelled.");
                         }}
-                        onPermissionsMissing={function (data) {
-                            Alert.alert("Check permissions!",JSON.stringify(data));
+                        onPermissionsMissing={function (data)
+                        {
+                            Alert.alert("Check permissions!", JSON.stringify(data));
                         }}
                     />
+                </View>
+                <View style={styles.activityIndicatorView}>
+                    <ActivityIndicator size="large" color="#0000ff" animating={this.state.shouldShowLoading}/>
                 </View>
             </View>
         );
