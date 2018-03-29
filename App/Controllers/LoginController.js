@@ -1,14 +1,15 @@
 import {Platform} from 'react-native'
 let packageJSON = require('../../package.json');
 
-const serverAddress = "http://132.72.238.94:3000/";
+const serverAddress = packageJSON.proxy;
 exports.getUser = function (data)
 {
     return fetch(serverAddress + 'getUser' + data.credentials.userId);
 };
 exports.addUser = function (data)
 {
-    return fetch(serverAddress + 'addUser', {
+    return fetch(serverAddress + 'addUser',
+    {
         method: 'POST',
         headers: {
             Accept: 'application/json',

@@ -6,7 +6,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest"
   },
-  "proxy": "http://localhost:3000",
+  "proxy": "http://192.168.1.11:3000/",
   "dependencies": {
     "native-base": "^2.3.10",
     "npm-install-peers": "^1.2.1",
@@ -14,9 +14,11 @@
     "react-native": "0.54.0",
     "react-native-facebook-login": "git+https://github.com/magus/react-native-facebook-login.git",
     "react-native-material-bottom-navigation": "^0.9.0",
+    "react-native-path": "0.0.5",
     "react-native-popup-dialog": "^0.11.46",
     "react-native-tabbar-bottom": "^1.0.4",
-    "react-navigation": "^1.5.8"
+    "react-navigation": "^1.5.8",
+    "url-parse": "^1.2.0"
   },
   "devDependencies": {
     "babel-jest": "22.4.1",
