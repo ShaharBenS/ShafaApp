@@ -8,7 +8,6 @@ import Favorites from "./Favorites";
 import Chats from "./Chats";
 import Profile from "./Profile";
 import ItemsGallery from "./ItemsGallery";
-import {Alert}from "react-native";
 
 
 const mainView = TabNavigator(

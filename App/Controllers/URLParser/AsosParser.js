@@ -1,18 +1,18 @@
 let URL = require('url-parse');
 let path = require('react-native-path');
 
+
 let parseByProductID = id => {
     return fetch('http://api.asos.com/product/catalogue/v2/products/'+id+'?store=COM&lang=en-GB&sizeSchema=EU&currency=EUR')
         .then(response=>{
-            return response.json().then(data=>{
-                return data;
-            }).catch(err=>{
+            return response.json()
+                .catch(err=>{
                 console.log(err);
-                return -1;
+                return  new Promise((res,rej)=>{rej("קישור לא תקין")});
             })
         }).catch(err=>{
             console.log(err);
-            return -1;
+            return new Promise((res,rej)=>{rej("קישור לא תקין או בעית תקשורת")});
         })
 
 };
@@ -24,6 +24,9 @@ exports.parseURL = (link) => {
         let productID = path.basename(url.pathname);
         return parseByProductID(productID);
   }
+  else if(link === ''){
+        return new Promise((res,rej)=>{rej('')})
+  }
   else
   { //Code Number
       let codeNumber = parseInt(link,10);
@@ -31,17 +34,16 @@ exports.parseURL = (link) => {
           .then(response=>{
               return response.json().then(data=>{
                     return data.products.length > 0 ?
-                        parseByProductID(data.products[0]).id : -1;
+                        parseByProductID(data.products[0].id) :
+                        new Promise((res,rej)=>{rej("המוצר לא נמצא")});
 
               }).catch(err=>{
                   console.log(err);
-                  return -1;
+                  return new Promise((res,rej)=>{rej("קוד לא תקין")});
               });
           }).catch(err=>{
               console.log(err);
-              return -1;
+              return new Promise((res,rej)=>{rej("בעיה באינטרנט")});
       })
   }
 };
-
-exports.parseURL("1259181");

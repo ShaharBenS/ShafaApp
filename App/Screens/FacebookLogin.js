@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         width: buttonSize.width * screenSize.width,
         flexDirection:'row',
         alignItems:'center',
-        justifyContent:'space-evenly'
+    justifyContent:'space-evenly'
     },
     backgroundImage: {
         marginTop: screenSize.height * (1 - backgroundPosition),
