@@ -8,12 +8,12 @@ import Favorites from "./Favorites";
 import Chats from "./Chats";
 import Profile from "./Profile";
 import ItemsGallery from "./ItemsGallery";
-
+import AddItem from './AddItem'
 
 const mainView = TabNavigator(
     {
         Categories: {screen: Categories},
-        ItemsGallery: {screen: ItemsGallery},
+        AddItem: {screen: AddItem},
         Chats: {screen: Chats},
         Favorites: {screen: Favorites},
         Profile: {screen: Profile}

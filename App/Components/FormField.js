@@ -60,10 +60,12 @@ export class ImagesField extends Component{
 
     render(){
         return (
-            <FlatList contentContainerStyle={styles.imagesContainerStyle} style={styles.imagesStyle} keyExtractor={(image,index)=>index} horizontal = {true}
-                      data={this.props.images} renderItem={(image) =>{
-                return <Image style={styles.imageStyle} source={{uri: 'https://'+image.item.url}}/>;}} />
-        )
+            <View>
+                <FlatList contentContainerStyle={styles.imagesContainerStyle} keyExtractor={(image,index)=>index} horizontal = {true}
+                          data={this.props.images} renderItem={(image) =>{
+                    return <Image resizeMode={'contain'} style={styles.imageStyle} source={{uri: 'https://'+image.item}}/>;}} />
+            </View>
+                )
     }
 }
 
@@ -81,11 +83,12 @@ let styles = StyleSheet.create({
         borderStyle: 'solid'
     },
     imagesContainerStyle:{
+        //height:screenSize.height*0.2,
     },
     imageStyle:{
-        margin:screenSize.width*0.01,
+        flex:1,
         height:screenSize.height*0.2,
-        width:screenSize.height*0.2,
-        //resizeMode:'contain'
+        width:screenSize.width*0.3,
+
     }
 });

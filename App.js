@@ -11,15 +11,13 @@ import {
 import { SwitchNavigator } from "react-navigation";
 import FacebookLogin from "./App/Screens/FacebookLogin";
 import MainScreen from "./App/Screens/MainScreen";
-
-import AddItem from "./App/Screens/AddItem"
+require('./App/Controllers/Globals');
 
 let App = SwitchNavigator({
     loginScreen: {screen: FacebookLogin},
     mainScreen: {screen: MainScreen}},
 );
 
-App = AddItem;
 
 export default App;
 AppRegistry.registerComponent('App', () => App);

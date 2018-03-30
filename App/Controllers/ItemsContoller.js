@@ -12,7 +12,14 @@ exports.addItem = item => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(item)
-        });
+        }).then(res=>res.json().then((data)=>{
+            if(data.output === 'SUCCESS'){
+                return new Promise((res,rej)=>{res()})
+            }
+            else{
+                return new Promise((res,rej)=>{rej('ההוספה נכשלה')})
+            }
+    }));
 };
 
 exports.getItem = id =>{
