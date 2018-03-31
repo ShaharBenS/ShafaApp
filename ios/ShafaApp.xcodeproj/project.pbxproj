@@ -51,6 +51,9 @@
 		6AFCBAD9BCA4468D89301600 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 556142A8B93548CC9122D1F4 /* Zocial.ttf */; };
 		E29332D280AF44788867521A /* OpenSansHebrewCondensed-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 64FC7018459D4996AF7C5BB8 /* OpenSansHebrewCondensed-Light.ttf */; };
 		116EF14727154EA0B30E3901 /* OpenSansHebrewCondensed-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 28A704807B56452099554AE5 /* OpenSansHebrewCondensed-Regular.ttf */; };
+		77465801ACA34A4F97ADFEC5 /* OpenSansHebrew-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3D15870E05DD467491CDB1A5 /* OpenSansHebrew-Light.ttf */; };
+		64A60B7F74404933B4D59FB5 /* OpenSansHebrew-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A05DEB7067C47AE9DC4B867 /* OpenSansHebrew-Regular.ttf */; };
+		B920A9B118AA4BE6A8B2E924 /* libRNGooglePlaces.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75AC2AB8497B4802BA86BCDA /* libRNGooglePlaces.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -316,6 +319,10 @@
 		556142A8B93548CC9122D1F4 /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		64FC7018459D4996AF7C5BB8 /* OpenSansHebrewCondensed-Light.ttf */ = {isa = PBXFileReference; name = "OpenSansHebrewCondensed-Light.ttf"; path = "../assets/fonts/OpenSansHebrewCondensed-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		28A704807B56452099554AE5 /* OpenSansHebrewCondensed-Regular.ttf */ = {isa = PBXFileReference; name = "OpenSansHebrewCondensed-Regular.ttf"; path = "../assets/fonts/OpenSansHebrewCondensed-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		3D15870E05DD467491CDB1A5 /* OpenSansHebrew-Light.ttf */ = {isa = PBXFileReference; name = "OpenSansHebrew-Light.ttf"; path = "../assets/fonts/OpenSansHebrew-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		1A05DEB7067C47AE9DC4B867 /* OpenSansHebrew-Regular.ttf */ = {isa = PBXFileReference; name = "OpenSansHebrew-Regular.ttf"; path = "../assets/fonts/OpenSansHebrew-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		4FB65C503A094CADA744D8F9 /* RNGooglePlaces.xcodeproj */ = {isa = PBXFileReference; name = "RNGooglePlaces.xcodeproj"; path = "../node_modules/react-native-google-places/ios/RNGooglePlaces.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		75AC2AB8497B4802BA86BCDA /* libRNGooglePlaces.a */ = {isa = PBXFileReference; name = "libRNGooglePlaces.a"; path = "libRNGooglePlaces.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -345,6 +352,7 @@
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				87B2CF3B173D411B95115E69 /* libRCTFBLogin.a in Frameworks */,
+				B920A9B118AA4BE6A8B2E924 /* libRNGooglePlaces.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -523,6 +531,7 @@
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				A005B4D60D454D82AC262F29 /* RCTFBLogin.xcodeproj */,
+				4FB65C503A094CADA744D8F9 /* RNGooglePlaces.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -588,6 +597,8 @@
 				556142A8B93548CC9122D1F4 /* Zocial.ttf */,
 				64FC7018459D4996AF7C5BB8 /* OpenSansHebrewCondensed-Light.ttf */,
 				28A704807B56452099554AE5 /* OpenSansHebrewCondensed-Regular.ttf */,
+				3D15870E05DD467491CDB1A5 /* OpenSansHebrew-Light.ttf */,
+				1A05DEB7067C47AE9DC4B867 /* OpenSansHebrew-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -997,6 +1008,8 @@
 				6AFCBAD9BCA4468D89301600 /* Zocial.ttf in Resources */,
 				E29332D280AF44788867521A /* OpenSansHebrewCondensed-Light.ttf in Resources */,
 				116EF14727154EA0B30E3901 /* OpenSansHebrewCondensed-Regular.ttf in Resources */,
+				77465801ACA34A4F97ADFEC5 /* OpenSansHebrew-Light.ttf in Resources */,
+				64A60B7F74404933B4D59FB5 /* OpenSansHebrew-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1131,10 +1144,12 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-facebook-login\RCTFBLogin/**",
+					"$(SRCROOT)\..\node_modules\react-native-google-places\ios",
 				);
 			};
 			name = Debug;
@@ -1156,10 +1171,12 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-facebook-login\RCTFBLogin/**",
+					"$(SRCROOT)\..\node_modules\react-native-google-places\ios",
 				);
 			};
 			name = Release;
@@ -1182,6 +1199,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-facebook-login\RCTFBLogin/**",
+					"$(SRCROOT)\..\node_modules\react-native-google-places\ios",
 				);
 			};
 			name = Debug;
@@ -1203,6 +1221,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-facebook-login\RCTFBLogin/**",
+					"$(SRCROOT)\..\node_modules\react-native-google-places\ios",
 				);
 			};
 			name = Release;
@@ -1233,10 +1252,12 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-facebook-login\RCTFBLogin/**",
+					"$(SRCROOT)\..\node_modules\react-native-google-places\ios",
 				);
 			};
 			name = Debug;
@@ -1267,10 +1288,12 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-facebook-login\RCTFBLogin/**",
+					"$(SRCROOT)\..\node_modules\react-native-google-places\ios",
 				);
 			};
 			name = Release;
@@ -1296,6 +1319,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 			};
 			name = Debug;
@@ -1320,6 +1344,7 @@
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 			};
