@@ -26,15 +26,15 @@ let onClickColor = '#f2f0ff';
 let backgroundPosition = 0.55195681511;
 let logoSize = {height: 0.2775528, width: 0.3736};
 let logoPosition = {top: 0.1003148, left: (1 - logoSize.width) / 2};
-let facebookLogoSize = {height: 0.0508322,width:0.048};
+let facebookLogoSize = {height: 0.0508322, width: 0.048};
 
 const styles = StyleSheet.create({
     loginButtonImage: {
         height: buttonSize.height * screenSize.height,
         width: buttonSize.width * screenSize.width,
-        flexDirection:'row',
-        alignItems:'center',
-    justifyContent:'space-evenly'
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-evenly'
     },
     backgroundImage: {
         marginTop: screenSize.height * (1 - backgroundPosition),
@@ -54,12 +54,12 @@ const styles = StyleSheet.create({
         marginTop: screenSize.height * logoPosition.top,
         marginLeft: screenSize.width * logoPosition.left,
     },
-    textStyle:{
+    textStyle: {
         color: "#ffffff",
-        fontSize:19,
-        fontFamily:'OpenSansHebrew-Regular'
+        fontSize: 19,
+        fontFamily: 'OpenSansHebrew-Regular'
     },
-    facebookLogo:{
+    facebookLogo: {
         height: screenSize.height * facebookLogoSize.height,
         width: screenSize.width * facebookLogoSize.width,
         resizeMode: 'stretch'
@@ -74,10 +74,10 @@ let facebookLogo = require('../Images/login/facebook_icon.png');
 
 let buttonView =
     <ImageBackground source={loginButtonBackground}
-            imageStyle={{resizeMode:'stretch'}}
-            style = {styles.loginButtonImage}>
-        <Image source={facebookLogo} style = {styles.facebookLogo}/>
-        <Text style = {styles.textStyle}>התחברי עם פייסבוק</Text>
+                     imageStyle={{resizeMode: 'stretch'}}
+                     style={styles.loginButtonImage}>
+        <Image source={facebookLogo} style={styles.facebookLogo}/>
+        <Text style={styles.textStyle}>התחברי עם פייסבוק</Text>
     </ImageBackground>;
 
 
@@ -112,30 +112,17 @@ export default class FacebookLogin extends Component<Props>
                         {
                             _this.setState({user: data.credentials.user});
                             let userPromise = loginController.addUser(data);
-                            userPromise.then(response =>
+                            userPromise.then(_user =>
                             {
-                                response.json().then(data =>
-                                {           //TODO: data.alreadyExists check if true and add a welcome back msg.
-                                    if (data.output === "SUCCESS")
-                                    {
-                                        global.user = data.user;
-                                        navigate('mainScreen');
-                                    }
-                                    else
-                                    {
-                                        Alert.alert("Error 1");
-                                        console.log(data.reason);
-                                    }
-                                }).catch(err =>
+                                global.user = _user;
+                                navigate('mainScreen');
+                            })
+                                .catch(err =>
                                 {
-                                    Alert.alert("Error 2");
+                                    Alert.alert("שגיאה", JSON.stringify(err));
                                     console.log(err);
                                 })
-                            }).catch(err =>
-                            {
-                                Alert.alert('Error 3');
-                                console.log(err);
-                            });
+
                         }}
                         onLogout={function ()
                         {
@@ -146,30 +133,14 @@ export default class FacebookLogin extends Component<Props>
                         {
                             _this.setState({user: data.credentials.user});
                             let userPromise = loginController.getUser(data);
-                            userPromise.then((response) =>
+                            userPromise.then(_user =>
                             {
-                                response.json().then(data =>
+                                global.user = _user;
+                                navigate('mainScreen');
+                            }).catch(err =>
                                 {
-                                    if (data.output === "SUCCESS")
-                                    {
-                                        global.user = data.user;
-                                        navigate('mainScreen');
-                                    }
-                                    else
-                                    {
-                                        Alert.alert("Error 4");
-                                        console.log(data.reason);
-                                    }
-                                }).catch(err =>
-                                {
-                                    Alert.alert("Error 5");
+                                    Alert.alert("שגיאה",JSON.stringify(err));
                                     console.log(err);
-                                });
-                            })
-                                .catch((err) =>
-                                {
-                                    console.log(err);
-                                    Alert.alert("Error 6");
                                 });
                         }}
                         onLoginNotFound={function ()

@@ -21,7 +21,6 @@
     "react-native-slider": "^0.11.0",
     "react-native-tabbar-bottom": "^1.0.4",
     "react-native-viewport-units": "0.0.5",
-    "react-navigation": "^1.5.8"
     "react-navigation": "^1.5.8",
     "url-parse": "^1.2.0"
   },

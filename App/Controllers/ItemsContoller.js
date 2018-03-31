@@ -23,9 +23,34 @@ exports.addItem = item => {
 };
 
 exports.getItem = id =>{
-    return fetch(serverAddress+'getItem'+id)
+    return fetch(serverAddress+'getItem/'+id).then(response=>{
+        return response.json().then(data=>{
+            return new Promise((res,rej)=>{
+                if(data.output === 'SUCCESS'){
+                    res(data.item);
+                }
+                else{
+                    rej(data.reason);
+                }
+            })
+        })
+    })
 };
 
-exports.getItems = (category,preference,from,howMany,facebookID)=>{
-    //return fetch(serverAddress + 'getItems'+category+)
+exports.getItems = (category,preference,from,howMany,location)=>{
+    return fetch(serverAddress + `getItems?categoryID=${category}&preference=${preference}&
+                                    from=${from}&howMany=${howMany}`+
+                                    location === undefined ? '' : `location=${location}`)
+        .then(response=>{
+            return response.json().then(data=>{
+              return new Promise((res,rej)=>{
+                  if(data.output === 'SUCCESS'){
+                      res(data.items);
+                  }
+                  else{
+                      rej(data.reason);
+                  }
+              })
+            })
+        })
 };
