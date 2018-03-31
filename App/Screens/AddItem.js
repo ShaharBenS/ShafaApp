@@ -15,10 +15,14 @@ import {
 let ASOSParser = require('../Controllers/URLParser/AsosParser');
 let backButton = require('../icons/pngs/next_arrow.png');
 let screenSize = Dimensions.get('window');
-import {PickerField, TextField, ImagesField} from "../Components/FormField";
+import {PickerField, TextField, ImagesField, BigTextField, LocationField} from "../Components/FormField";
+
+
 let itemsController = require('../Controllers/ItemsContoller');
 
 let categoriesLabelsAndValues;
+
+let viewWidth = 0.8;
 
 export default class AddItem extends Component<props>
 {
@@ -27,7 +31,8 @@ export default class AddItem extends Component<props>
         super(props);
         this.state = {
             company: 'ASOS', linkOrID: '',
-            product: null, productStatus: '', textChanged: false, selectedSize: '', price: -1, categoryID: 10
+            product: null, productStatus: '', textChanged: false,
+            selectedSize: '', price: -1, categoryID: 10, description: '', location: null,
         };
         setInterval(() =>
         {
@@ -43,16 +48,17 @@ export default class AddItem extends Component<props>
                             {
                                 return {value: variant.brandSize, label: variant.brandSize}
                             });
-                            variantsSizes.unshift({label:'בחר מידה',value:''});
+                            variantsSizes.unshift({label: 'בחר מידה', value: ''});
                             this.setState({
-                                selectedSize:res.isOneSize ? 'One Size' : '',
+                                selectedSize: res.isOneSize ? 'One Size' : '',
                                 product: {
-                                    sizes: res.isOneSize ? [{label:'גודל אחד',value:'One Size'}] : variantsSizes
-                                        ,
-                                    name:res.name,
-                                    manufacturer:res.brand.name,
-                                    images:res.media.images.map(image=>image.url),
-
+                                    sizes: res.isOneSize ? [{label: 'גודל אחד', value: 'One Size'}] : variantsSizes
+                                    ,
+                                    name: res.name,
+                                    manufacturer: res.brand.name,
+                                    images: res.media.images.map(image => image.url),
+                                    link: res.link,
+                                    info: res.info
                                 }, productStatus: ''
                             });
                         })
@@ -69,7 +75,6 @@ export default class AddItem extends Component<props>
         {
             return {label: cat.namet, value: cat.id}
         });
-        categoriesLabelsAndValues.pop();
         categoriesLabelsAndValues.unshift({label: 'בחר קטגוריה', value: '-1'});
     }
 
@@ -105,7 +110,9 @@ export default class AddItem extends Component<props>
                                          _this.state.company = itemValue;
                                          _this.textChanged = true;
                                      }}/>
-                        <TextField fieldName={'לינק / קוד פריט'}
+                        <TextField
+                            maxLength={250}
+                                fieldName={'לינק / קוד פריט'}
                                    textChangedCallback={text =>
                                    {
                                        _this.state.linkOrID = text;
@@ -128,7 +135,9 @@ export default class AddItem extends Component<props>
                                              {
                                                  this.state.categoryID = itemValue
                                              }}/>,
-                                <TextField keyboardType={'numeric'} fieldName={'מחיר'} textChangedCallback={text =>
+                                <TextField maxLength={10}
+                                        keyboardType={'numeric'} fieldName={'מחיר'}
+                                           textChangedCallback={text =>
                                 {
                                     if (!isNaN(text))
                                     {
@@ -136,26 +145,56 @@ export default class AddItem extends Component<props>
                                     }
                                 }}/>
                                 ,
+                                <BigTextField fieldName={'תיאור'}
+                                              initialText={'ספר על המוצר.\nלמה קנית? למה מכרת?\nאיך לדעתך הפריט?'}
+                                              textChangedCallback={(text) =>
+                                              {
+                                                  this.state.description = text
+                                              }}
+                                              width={viewWidth * screenSize.width}
+                                              height={screenSize.height*0.2}
+                                                maxLength={150}/>,
+                                <LocationField fieldName={'מיקום פריט'}
+                                               suggestionsWidth={viewWidth*screenSize.width}
+                                               locationFoundCallback={(loc)=>{
+                                                   this.state.location = loc;
+                                               }} />,
                                 <TouchableHighlight onPress={() =>
                                 {
-                                    if(this.state.price < 0) {Alert.alert("מחיר לא תקין")}
-                                    else if(this.state.categoryID < 0) {Alert.alert("בחר קטגוריה")}
-                                    else {
+                                    if (this.state.price < 0)
+                                    {
+                                        Alert.alert("מחיר לא תקין")
+                                    }
+                                    else if (this.state.categoryID < 0)
+                                    {
+                                        Alert.alert("בחר קטגוריה")
+                                    }
+                                    else if (this.state.location == null)
+                                    {
+                                        Alert.alert("בחר מיקום")
+                                    }
+                                    else
+                                    {
                                         let product = this.state.product;
-                                        let item = {condition:'new',
-                                                    name:product.name,
-                                                    categoryID:this.state.categoryID,
-                                                    size:this.state.selectedSize,
-                                                    owner:global.user._id,
-                                                    location:[0,0],
-                                                    price:this.state.price,
-                                                    manufacturer:product.manufacturer,
-                                                    images:product.images,
+                                        let item = {
+                                            condition: 'new',
+                                            name: product.name,
+                                            categoryID: this.state.categoryID,
+                                            size: this.state.selectedSize,
+                                            owner: global.user._id,
+                                            location: [this.state.location.lat, this.state.location.lng],
+                                            price: this.state.price,
+                                            manufacturer: product.manufacturer,
+                                            images: product.images,
                                         };
-                                        itemsController.addItem(item).then(()=>{
+                                        itemsController.addItem(item).then(() =>
+                                        {
                                             Alert.alert("הפריט נוסף בהצלחה!");
                                             navigate('Profile')
-                                        }).catch((err)=>{Alert.alert('שגיאה!',err)})
+                                        }).catch((err) =>
+                                        {
+                                            Alert.alert('שגיאה!', err)
+                                        })
                                     }
                                 }}
                                                     underlayColor='#F2A4FA' style={styles.postButton}>
@@ -163,7 +202,8 @@ export default class AddItem extends Component<props>
                                         פרסמי למכירה
                                     </Text>
                                 </TouchableHighlight>
-                            ,<View style={{height:screenSize.height*0.13}}/>]}
+                                , <View style={{height: screenSize.height * 0.13}}/>
+                            ]}
 
 
                     </View>
@@ -182,8 +222,8 @@ let styles = StyleSheet.create({
     },
     propertiesView: {
         //marginTop: screenSize.height * 0.06,
-        width: screenSize.width * 0.8,
-        marginLeft: screenSize.width * 0.1
+        width: screenSize.width * viewWidth,
+        marginLeft: screenSize.width * (1 - viewWidth) / 2
     }
     ,
     textStyle: {

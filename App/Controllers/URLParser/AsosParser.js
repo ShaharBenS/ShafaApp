@@ -5,7 +5,10 @@ let path = require('react-native-path');
 let parseByProductID = id => {
     return fetch('http://api.asos.com/product/catalogue/v2/products/'+id+'?store=COM&lang=en-GB&sizeSchema=EU&currency=EUR')
         .then(response=>{
-            return response.json()
+            return response.json().then(data=>{
+                data.link = `www.asos.com/search/${data.productCode}?q=${data.productCode}`;
+                return new Promise((res,rej)=>{res(data)});
+            })
                 .catch(err=>{
                 console.log(err);
                 return  new Promise((res,rej)=>{rej("קישור לא תקין")});
