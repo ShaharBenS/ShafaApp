@@ -80,7 +80,8 @@ export class BigTextField extends Component
                     }]}
                     maxLength={this.props.maxLength} placeholder={this.props.initialText}
                     onChangeText={this.props.textChangedCallback}
-                    multiline/>
+                    multiline
+                    numberOfLines={this.props.numberOfLines}/>
             </View>)
     }
 }
@@ -113,7 +114,7 @@ export class LocationField extends Component
             <View>
                 <Text style={styles.textStyle}>{this.props.fieldName}</Text>
                 <GooglePlacesAutocomplete
-            placeholder='Search'
+            placeholder='חפש כתובת'
             minLength={2} // minimum length of text to search
             autoFocus={false}
             returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype

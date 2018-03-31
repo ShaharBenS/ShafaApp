@@ -23,17 +23,19 @@ let itemsController = require('../Controllers/ItemsContoller');
 let categoriesLabelsAndValues;
 
 let viewWidth = 0.8;
+let initialState;
 
 export default class AddItem extends Component<props>
 {
     constructor(props)
     {
         super(props);
-        this.state = {
-            company: 'ASOS', linkOrID: '',
-            product: null, productStatus: '', textChanged: false,
+        initialState = {
+            product: null, productStatus: '',
             selectedSize: '', price: -1, categoryID: 10, description: '', location: null,
         };
+        /* ASOS is the default and the only supported company for now */
+        this.state = Object.assign({textChanged: false,company: 'ASOS', linkOrID: '',},initialState);
         setInterval(() =>
         {
             if (this.state.textChanged)
@@ -108,6 +110,7 @@ export default class AddItem extends Component<props>
                                      valueChangedCallback={(itemValue) =>
                                      {
                                          _this.state.company = itemValue;
+                                         _this.setState(initialState);
                                          _this.textChanged = true;
                                      }}/>
                         <TextField
@@ -116,6 +119,7 @@ export default class AddItem extends Component<props>
                                    textChangedCallback={text =>
                                    {
                                        _this.state.linkOrID = text;
+                                       _this.setState(initialState);
                                        _this.state.textChanged = true;
                                    }}/>
                         <Text style={styles.productStatus}>{this.state.productStatus}</Text>
@@ -146,14 +150,15 @@ export default class AddItem extends Component<props>
                                 }}/>
                                 ,
                                 <BigTextField fieldName={'תיאור'}
-                                              initialText={'ספר על המוצר.\nלמה קנית? למה מכרת?\nאיך לדעתך הפריט?'}
+                                              initialText={'ספרי על המוצר (אופציונלני).\nלמה קנית? למה מכרת? איך לדעתך הפריט?'}
                                               textChangedCallback={(text) =>
                                               {
                                                   this.state.description = text
                                               }}
                                               width={viewWidth * screenSize.width}
-                                              height={screenSize.height*0.2}
-                                                maxLength={150}/>,
+                                              height={screenSize.height*0.12}
+                                              numberOfLines={5}
+                                                maxLength={50}/>,
                                 <LocationField fieldName={'מיקום פריט'}
                                                suggestionsWidth={viewWidth*screenSize.width}
                                                locationFoundCallback={(loc)=>{
@@ -186,10 +191,14 @@ export default class AddItem extends Component<props>
                                             price: this.state.price,
                                             manufacturer: product.manufacturer,
                                             images: product.images,
+                                            link: product.link,
+                                            productInfo:product.info,
+                                            description:this.state.description
                                         };
                                         itemsController.addItem(item).then(() =>
                                         {
                                             Alert.alert("הפריט נוסף בהצלחה!");
+                                            this.setState(initialState);
                                             navigate('Profile')
                                         }).catch((err) =>
                                         {

@@ -1,7 +1,6 @@
 let URL = require('url-parse');
 let path = require('react-native-path');
 
-
 let parseByProductID = id => {
     return fetch('http://api.asos.com/product/catalogue/v2/products/'+id+'?store=COM&lang=en-GB&sizeSchema=EU&currency=EUR')
         .then(response=>{
@@ -24,6 +23,10 @@ exports.parseURL = (link) => {
   if(isNaN(link))
   { //HTTP URL
         let url = new URL(link,true);
+        if(url.hostname !== 'www.asos.com' && url.hostname !== 'us.asos.com')
+        {
+            return new Promise((res,rej)=>{rej("לינק זה לא מאסוס")})
+        }
         let productID = path.basename(url.pathname);
         return parseByProductID(productID);
   }

@@ -14,12 +14,9 @@ import { SwitchNavigator } from "react-navigation";
 import FacebookLogin from "./App/Screens/FacebookLogin";
 import MainScreen from "./App/Screens/MainScreen";
 require('./App/Controllers/Globals');
-import AddItem from './App/Screens/AddItem'
 
 
 let App = SwitchNavigator({
-    addItem: {screen:AddItem},
-
     loginScreen: {screen: FacebookLogin},
     mainScreen: {screen: MainScreen}},
 );
