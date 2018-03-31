@@ -10,10 +10,18 @@ import {
 
 export class GalleyItem extends Component<props> {
 
+    constructor(props) {
+        super(props);
+        this.state = { like: false };
+    }
+
+
     render() {
         let img = require('../Images/placeholder.jpg');
         let logo = require('../Images/loginButton_he.png');
+        let unlike = require('../icons/pngs/like_icon.png');
         let like = require('../icons/pngs/like_icon_selected.png');
+
         return (
             <View id={'container'} style={styles.container}>
                 <View id={'upper'} >
@@ -21,8 +29,8 @@ export class GalleyItem extends Component<props> {
                     <TouchableOpacity activeOpacity={0.5} style={styles.profilePicTouchable}>
                     <Image id={'profile'} source={logo} style={styles.profilePic}/>
                     </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.5} style={styles.like}>
-                        <Image id={'like'} source={like} />
+                    <TouchableOpacity onPress={()=>this.setState({like: !this.state.like})} activeOpacity={0.5} style={styles.like}>
+                        <Image id={'like'} source={this.state.like ? like : unlike} />
                     </TouchableOpacity>
                 </View>
                 <View id={'info'} style={styles.textualInfo}>

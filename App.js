@@ -9,17 +9,15 @@ import {
     AppRegistry,
 } from 'react-native';
 import { NavigationComponent } from 'react-native-material-bottom-navigation'
-import { TabNavigator } from "react-navigation";
-import Categories from "./App/Screens/Categories";
-import Favorites from "./App/Screens/Favorites";
-import Chats from "./App/Screens/Chats";
-import Profile from "./App/Screens/Profile";
-import ItemsGallery from "./App/Screens/ItemsGallery";
+import {SwitchNavigator} from "react-navigation";
+import FacebookLogin from "./App/Screens/FacebookLogin";
+import MainScreen from "./App/Screens/MainScreen";
 
 
 let App = SwitchNavigator({
-    loginScreen: {screen: FacebookLogin},
-    mainScreen: {screen: MainScreen}},
+    mainScreen: {screen: MainScreen},
+    loginScreen: {screen: FacebookLogin}
+    },
 );
 
 export default App;

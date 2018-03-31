@@ -8,12 +8,12 @@ import Favorites from "./Favorites";
 import Chats from "./Chats";
 import Profile from "./Profile";
 import ItemsGallery from "./ItemsGallery";
-import {Alert}from "react-native";
+import Filter from "./Filter";
 
 
 const mainView = TabNavigator(
     {
-        Categories: {screen: Categories},
+        Filter: {screen: Filter},
         ItemsGallery: {screen: ItemsGallery},
         Chats: {screen: Chats},
         Favorites: {screen: Favorites},
@@ -27,7 +27,7 @@ const mainView = TabNavigator(
                 labelColor: '#000000',
                 rippleColor: 'purple',
                 tabs: {
-                    Categories: {
+                    Filter: {
                         barBackgroundColor: '#FFFFFF'
                     },
                     ItemsGallery: {
