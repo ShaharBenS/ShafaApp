@@ -57,26 +57,22 @@ exports.getItems = (category, preference, from, howMany, location) =>
 {
     return fetch(serverAddress + 'getItems?categoryID=' + category + '&preference=' + preference +
         '&from=' + from + '&howMany=' + howMany +
-        (location === undefined ? '' : 'location=' + location))
+        (location === undefined ? '' : '&location=' + location))
         .then(response =>
         {
-            console.log("1here444");
             return response.json().then(data =>
             {
-                console.log("1here777");
                 return new Promise ((res, rej) =>
                 {
                     if (data.output === 'SUCCESS')
                     {
-                        console.log('1here888');
                         res(data.items);
                     }
                     else
                     {
-                        console.log('1here999');
                         rej(data.reason);
                     }
                 })
             })
-        }).catch(err=>{console.log("1here555")}).catch(err=>{console.log("1here666")}).catch(err=>{console.log("1here565")})
+        })
 };

@@ -41,6 +41,7 @@ export default class ItemsGallery extends Component<Props>
         super(props);
         const {navigate} = this.props.navigation;
 
+
         this.state = {
             selectedIndex: 2,
             disableArray: [true, false, true, true],
@@ -53,10 +54,12 @@ export default class ItemsGallery extends Component<Props>
 
     changeSort(index,chunkNumber)
     {
+        let location = undefined;
         let sortStrategy = null;
         switch(index){
             case 0:
                 sortStrategy = 'closest';
+                location = [global.currentLocation.lng,global.currentLocation.lat];
                 break;
             case 1:
                 sortStrategy = 'cheapest';
@@ -71,7 +74,8 @@ export default class ItemsGallery extends Component<Props>
                 sortStrategy = 'random';
                 break;
         }
-        itemsController.getItems(global.currentCategoryID, sortStrategy, chunkNumber, itemsPerChunk)
+        itemsController.getItems(global.currentCategoryID, sortStrategy, chunkNumber, itemsPerChunk,
+            location)
             .then(items =>
             {
                 this.setState({items: items});

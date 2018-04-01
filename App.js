@@ -18,6 +18,20 @@ import MainScreen from "./App/Screens/MainScreen";
 
 let refreshLocationRate = 30000;
 
+let updateLocation = ()=>
+{
+    navigator.geolocation.getCurrentPosition((location) =>
+    {
+        global.currentLocation = {lng: location.coords.longitude, lat: location.coords.latitude}
+    }, (err) =>
+    {
+        global.currentLocation = {};
+    });
+};
+updateLocation();       //FIRST TIME GETTING LOCATION
+setInterval(()=>{
+    updateLocation();
+},refreshLocationRate);
 
 let App = SwitchNavigator({
     loginScreen: {screen: FacebookLogin},

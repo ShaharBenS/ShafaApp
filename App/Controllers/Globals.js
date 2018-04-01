@@ -12,4 +12,4 @@ global.categories = [   {namet:"מכנסיים ואוברולים", id:'0'},
 
 global.currentCategoryID = global.categories.length - 1;
 
-global.currentLocation = [0,0];
+global.currentLocation = {};
