@@ -8,45 +8,55 @@ import {
     Dimensions
 } from 'react-native';
 
+
+let distanceController = require('../Controllers/DistanceController');
+
+let imgURI,profileURI,unlike,like;
+
 export class GalleyItem extends Component<props> {
 
     constructor(props) {
+        props.item.manufacturer = props.item.manufacturer.split(' ')[0];
         super(props);
-        this.state = { like: false };
+        this.state = { like: global.user.likedItems.indexOf(props.item.owner) > -1 };
+
+
+
+        imgURI = 'http://'+props.item.images[0];
+        profileURI = 'http://graph.facebook.com/'+props.item.userFacebookID+'/picture?type=square';
+        unlike = require('../icons/pngs/like_icon.png');
+        like = require('../icons/pngs/like_icon_selected.png');
     }
 
 
     render() {
-        let img = require('../Images/placeholder.jpg');
-        let logo = require('../Images/loginButton_he.png');
-        let unlike = require('../icons/pngs/like_icon.png');
-        let like = require('../icons/pngs/like_icon_selected.png');
+
 
         return (
             <View id={'container'} style={styles.container}>
                 <View id={'upper'} >
-                    <Image id={'item'} source={img} style={styles.itemPic}/>
+                    <Image id={'item'} source={{uri:imgURI}} style={styles.itemPic}/>
                     <TouchableOpacity activeOpacity={0.5} style={styles.profilePicTouchable}>
-                    <Image id={'profile'} source={logo} style={styles.profilePic}/>
+                    <Image id={'profile'} source={{uri:profileURI}} style={styles.profilePic}/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>this.setState({like: !this.state.like})} activeOpacity={0.5} style={styles.like}>
                         <Image id={'like'} source={this.state.like ? like : unlike} />
                     </TouchableOpacity>
                 </View>
                 <View id={'info'} style={styles.textualInfo}>
-                    <Text numberOfLines={2} id={'itemName'} style={styles.name}>זהו שם מאוד מאוד ארוך למוצר</Text>
+                    <Text numberOfLines={2} id={'itemName'} style={styles.name}>{this.props.item.name}</Text>
                     <View id={'infoSpec'} style={styles.infoSpec}>
                         <Text style={styles.simpleFontSize}>
-                            <Text id={'company'} >זארה</Text>
+                            <Text id={'company'} >{this.props.item.manufacturer}</Text>
                             <Text> • </Text>
-                            <Text id={'distance'}>2 קמ</Text>
+                            <Text id={'distance'}>{/*this.props.item.location*/}XX</Text>
                             <Text> • </Text>
-                            <Text id={'size'} >L</Text>
+                            <Text id={'size'} >{this.props.item.size}</Text>
                         </Text>
                     </View>
-                    <Text id={'price'} style={styles.price}>120$</Text>
+                    <Text id={'price'} style={styles.price}>{this.props.item.price+' ש"ח'}</Text>
                     <TouchableOpacity activeOpacity={0.5} style={styles.buyButton}>
-                        <Text id={'buy'} style={styles.buyText}>BUY</Text>
+                        <Text id={'buy'} style={styles.buyText}>לקנייה</Text>
                     </TouchableOpacity>
                 </View>
             </View>

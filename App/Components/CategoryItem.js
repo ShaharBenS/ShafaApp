@@ -15,7 +15,8 @@ const radius = 3;
 export class CategoryItem extends Component<props> {
     render() {
         return (
-            <TouchableOpacity activeOpacity={0.5} style={styles.container}>
+            <TouchableOpacity onPress={this.props.onPressCallback}
+                activeOpacity={0.5} style={styles.container}>
                 <Image source={this.props.categoryImagePath} style={styles.image}/>
                 <Text style={styles.title}>{this.props.categoryName}</Text>
             </TouchableOpacity>

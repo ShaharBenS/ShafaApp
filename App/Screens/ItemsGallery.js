@@ -13,6 +13,7 @@ import {
     Text,
     Dimensions,
     TouchableOpacity,
+    Alert,
 
 } from 'react-native';
 import PopupDialog from 'react-native-popup-dialog';
@@ -21,37 +22,84 @@ import PopupDialog from 'react-native-popup-dialog';
 import {GalleyItem} from '../Components/GalleyItem';
 import {SelectorItem} from '../Components/SelectorItem';
 
+let itemsController = require('../Controllers/ItemsContoller');
+let maxChunksParallel = 50;
+let itemsPerChunk = 50;
 
-export default class ItemsGallery extends Component<Props> {
+let textArray = ["הכי קרוב אלי", "מהזול ליקר", "מהיקר לזול", "החדש ביותר"];
+
+export default class ItemsGallery extends Component<Props>
+{
 
     static navigationOptions = {
         labelStyle: {display: 'none'},
         tabBarIcon: () => <Image source={require('../icons/pngs/categories_icon_gry.png')} style={styles.icon}/>
     };
 
-    constructor(props) {
+    constructor(props)
+    {
         super(props);
-        this.state = {  selectedIndex: 2,
-                        disableArray: [true, false, true, true] };
+        const {navigate} = this.props.navigation;
+
+        this.state = {
+            selectedIndex: 2,
+            disableArray: [true, false, true, true],
+            items: []
+        };
+
+        this.changeSort(-1,0);
+
     }
 
-    render() {
-        let data = [{id: '1'}, {id: '2'}, {id: '3'}, {id: '4'}, {id: '5'}, {id: '6'}];
+    changeSort(index,chunkNumber)
+    {
+        let sortStrategy = null;
+        switch(index){
+            case 0:
+                sortStrategy = 'closest';
+                break;
+            case 1:
+                sortStrategy = 'cheapest';
+                break;
+            case 2:
+                sortStrategy = 'expansive';
+                break;
+            case 3:
+                sortStrategy = 'newest';
+                break;
+            default:
+                sortStrategy = 'random';
+                break;
+        }
+        itemsController.getItems(global.currentCategoryID, sortStrategy, chunkNumber, itemsPerChunk)
+            .then(items =>
+            {
+                this.setState({items: items});
+            })
+            .catch(err =>
+            {
+                Alert.alert('שגיאה', JSON.stringify(err))
+            });
+    }
 
-        let textArray = ["הכי קרוב אלי","מהזול ליקר","מהיקר לזול","החדש ביותר"];
+    render()
+    {
+
         let selectorsArray = [];
-        for(let i=0; i<textArray.length; i++)
+
+        for (let i = 0; i < textArray.length; i++)
         {
             selectorsArray.push(<SelectorItem textToDisplay={textArray[i]} disableDot={this.state.disableArray[i]}
-                                              onPress={()=> {
+                                              onPress={() =>
+                                              {
                                                   let disables = this.state.disableArray;
-                                                  for(let j=0; j<textArray.length; j++)
+                                                  for (let j = 0; j < textArray.length; j++)
                                                       disables[j] = j !== i;
                                                   this.setState({selectedIndex: i, disableArray: disables});
+                                                  this.changeSort(i,0);
                                               }
                                               }/>)
         }
-
 
 
         return (
@@ -75,7 +123,8 @@ export default class ItemsGallery extends Component<Props> {
                         }}
                     />
 
-                    <TouchableOpacity style={styles.simpleView} onPress={() => {
+                    <TouchableOpacity style={styles.simpleView} onPress={() =>
+                    {
                         this.popupDialog.show();
                     }}>
                         <Text style={styles.simpleText}>מיון</Text>
@@ -85,7 +134,8 @@ export default class ItemsGallery extends Component<Props> {
 
                 </View>
                 <PopupDialog dialogStyle={{marginTop: -200, paddingRight: 30, paddingLeft: 30}}
-                             width={0.8} height={270} ref={(popupDialog) => {
+                             width={0.8} height={270} ref={(popupDialog) =>
+                {
                     this.popupDialog = popupDialog;
                 }}>
                     <View style={{flex: 1}}>
@@ -98,11 +148,14 @@ export default class ItemsGallery extends Component<Props> {
 
                 <FlatList
                     numColumns={2}
-                    data={data}
-                    renderItem={({item}) => <GalleyItem/>}
-                    keyExtractor={item => item.id}
-
+                    data={this.state.items}
+                    renderItem={(item) =>
+                    {
+                        return <GalleyItem item={item.item}/>
+                    }}
+                    keyExtractor={(items, index) => index}
                 />
+
 
             </View>
         );
@@ -110,6 +163,14 @@ export default class ItemsGallery extends Component<Props> {
 
 
 };
+
+/*
+        numColumns={2}
+        data={items}
+        renderItem={(item) => <GalleyItem item={item}/>}
+        keyExtractor={item => item._id}
+ */
+
 
 const percentHeight = 0.1;
 const window = Dimensions.get('window');
