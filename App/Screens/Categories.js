@@ -14,7 +14,7 @@ import {
 
 } from 'react-native';
 import {CategoryItem} from '../Components/CategoryItem';
-import {vs} from '../Controllers/global';
+import {vs, minUnit} from '../Controllers/global';
 
 export default class Categories extends Component<Props> {
 

@@ -10,7 +10,7 @@ import {
 
 } from 'react-native';
 import Slider from 'react-native-slider';
-import {vs} from '../Controllers/global';
+import {vs, minUnit} from '../Controllers/global';
 
 export default class Filter extends Component<Props> {
 
@@ -121,9 +121,9 @@ export default class Filter extends Component<Props> {
 };
 
 const window = Dimensions.get('window');
-const barHeight = window.height / 12;
-const bottomViewHeight = window.height / 3;
-const cancelImageSize = window.width / 20;
+const barHeight = window.height / vs(6);
+const bottomViewHeight = window.height / vs(1.5);
+const cancelImageSize = window.width / vs(10);
 const themePurple = '#be7ce0';
 const initialDistance = 10;
 const initialPrice = 50;

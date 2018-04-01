@@ -7,7 +7,7 @@ import {
     View,
     Dimensions
 } from 'react-native';
-import {vs} from '../Controllers/global';
+import {vs, minUnit} from '../Controllers/global';
 
 export class GalleyItem extends Component<props> {
 
@@ -80,7 +80,8 @@ const styles = StyleSheet.create({
         marginLeft: vs(3),
         position: 'relative',
         backgroundColor: colorWhite,
-        height: renderedHeight,
+        height: vs(renderedHeight/2),
+        width: vs(renderedWidth/2),
         borderRadius: vs(1),
 
     },

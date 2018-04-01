@@ -16,7 +16,7 @@ import {
 
 } from 'react-native';
 import PopupDialog from 'react-native-popup-dialog';
-import {vs} from '../Controllers/global';
+import {vs, minUnit} from '../Controllers/global';
 import {GalleyItem} from '../Components/GalleyItem';
 import {SelectorItem} from '../Components/SelectorItem';
 
@@ -35,7 +35,7 @@ export default class ItemsGallery extends Component<Props> {
     }
 
     render() {
-        let data = [{id: '1'}, {id: '2'}, {id: '3'}, {id: '4'}, {id: '5'}, {id: '6'}];
+        let data = [{id: '1'}, {id: '2'}, {id: '3'}, {id: '4'}, {id: '5'}];
 
         let textArray = ["הכי קרוב אלי","מהזול ליקר","מהיקר לזול","החדש ביותר"];
         let selectorsArray = [];
@@ -109,6 +109,7 @@ const percentHeight = 0.1;
 const window = Dimensions.get('window');
 const renderedHeight = percentHeight * window.height;
 const dialogHeight = vs(150);
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,

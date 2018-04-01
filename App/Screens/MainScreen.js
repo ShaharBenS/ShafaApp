@@ -9,11 +9,12 @@ import Chats from "./Chats";
 import Profile from "./Profile";
 import ItemsGallery from "./ItemsGallery";
 import Filter from "./Filter";
+import SelectMeasure from "./SelectMeasure";
 
 
 const mainView = TabNavigator(
     {
-        Filter: {screen: Filter},
+        SelectMeasure: {screen: SelectMeasure},
         ItemsGallery: {screen: ItemsGallery},
         Chats: {screen: Chats},
         Favorites: {screen: Favorites},

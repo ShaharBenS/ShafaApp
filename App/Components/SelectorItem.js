@@ -5,7 +5,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import {vs} from '../Controllers/global';
+import {vs, minUnit} from '../Controllers/global';
 
 export class SelectorItem extends Component<props> {
 
