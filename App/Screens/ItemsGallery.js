@@ -16,8 +16,7 @@ import {
 
 } from 'react-native';
 import PopupDialog from 'react-native-popup-dialog';
-
-
+import {vs} from '../Controllers/global';
 import {GalleyItem} from '../Components/GalleyItem';
 import {SelectorItem} from '../Components/SelectorItem';
 
@@ -48,6 +47,7 @@ export default class ItemsGallery extends Component<Props> {
                                                   for(let j=0; j<textArray.length; j++)
                                                       disables[j] = j !== i;
                                                   this.setState({selectedIndex: i, disableArray: disables});
+                                                  this.popupDialog.dismiss();
                                               }
                                               }/>)
         }
@@ -67,13 +67,7 @@ export default class ItemsGallery extends Component<Props> {
                         <Text style={styles.simpleText}>סינון</Text>
                     </TouchableOpacity>
 
-                    <View
-                        style={{
-                            height: 30,
-                            width: 1,
-                            backgroundColor: '#c5c2c2'
-                        }}
-                    />
+                    <View style={styles.upperBar} />
 
                     <TouchableOpacity style={styles.simpleView} onPress={() => {
                         this.popupDialog.show();
@@ -84,8 +78,8 @@ export default class ItemsGallery extends Component<Props> {
 
 
                 </View>
-                <PopupDialog dialogStyle={{marginTop: -200, paddingRight: 30, paddingLeft: 30}}
-                             width={0.8} height={270} ref={(popupDialog) => {
+                <PopupDialog dialogStyle={styles.dialogCustom}
+                             width={0.8} height={dialogHeight} ref={(popupDialog) => {
                     this.popupDialog = popupDialog;
                 }}>
                     <View style={{flex: 1}}>
@@ -114,15 +108,15 @@ export default class ItemsGallery extends Component<Props> {
 const percentHeight = 0.1;
 const window = Dimensions.get('window');
 const renderedHeight = percentHeight * window.height;
-
+const dialogHeight = vs(150);
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#FFFFFF',
     },
     icon: {
-        width: 24,
-        height: 24,
+        width: vs(13),
+        height: vs(13),
         resizeMode: 'cover',
     },
     header: {
@@ -133,18 +127,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     categoryName: {
-        fontSize: 25,
-        fontFamily: 'OpenSansHebrewCondensed-Regular',
+        fontSize: vs(13),
+        fontFamily: 'OpenSansHebrew-Regular',
         color: '#4a4a4a',
-        margin: 10
+        margin: vs(5)
     },
     backArrow: {
         position: 'absolute',
         right: 0,
-        marginRight: 15,
+        marginRight: vs(8),
     },
     lineDelimiter: {
-        height: 1,
+        height: vs(1),
         backgroundColor: '#c5c2c2'
     },
     options: {
@@ -153,21 +147,35 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    simpleView: {flex: 1, alignSelf: 'stretch', justifyContent: 'center'},
+    simpleView: {
+        flex: 1,
+        alignSelf: 'stretch',
+        justifyContent: 'center'
+    },
     simpleText: {
         alignSelf: 'center',
-        fontFamily: 'OpenSansHebrewCondensed-Regular',
-        fontSize: 20,
+        fontFamily: 'OpenSansHebrew-Regular',
+        fontSize: vs(11),
     },
     dialogStyle: {
-        margin: 20
+        margin: vs(11)
     },
     selector: {
-        width: 15,
-        height: 15,
-        borderRadius: 30,
+        width: vs(8),
+        height: vs(8),
+        borderRadius: vs(16),
         backgroundColor: '#be7ce0',
         alignSelf: 'center'
+    },
+    upperBar: {
+        height: vs(16),
+        width: vs(1),
+        backgroundColor: '#c5c2c2'
+    },
+    dialogCustom: {
+        marginTop: -vs(110),
+        paddingRight: vs(16),
+        paddingLeft: vs(16)
     }
 
 

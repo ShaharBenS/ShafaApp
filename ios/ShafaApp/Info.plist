@@ -67,6 +67,14 @@
 		<string>Zocial.ttf</string>
 		<string>OpenSansHebrewCondensed-Light.ttf</string>
 		<string>OpenSansHebrewCondensed-Regular.ttf</string>
+		<string>OpenSansHebrew-Bold.ttf</string>
+		<string>OpenSansHebrew-BoldItalic.ttf</string>
+		<string>OpenSansHebrew-ExtraBold.ttf</string>
+		<string>OpenSansHebrew-ExtraBoldItalic.ttf</string>
+		<string>OpenSansHebrew-Italic.ttf</string>
+		<string>OpenSansHebrew-Light.ttf</string>
+		<string>OpenSansHebrew-LightItalic.ttf</string>
+		<string>OpenSansHebrew-Regular.ttf</string>
 	</array>
 </dict>
 </plist>

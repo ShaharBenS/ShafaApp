@@ -14,11 +14,12 @@ import {
 
 } from 'react-native';
 import {CategoryItem} from '../Components/CategoryItem';
+import {vs} from '../Controllers/global';
 
 export default class Categories extends Component<Props> {
 
     static navigationOptions = {
-        tabBarIcon: () => <Image source={require('../icons/pngs/categories_icon_gry.png')} style={{width:24, height:24, resizeMode:'cover'}}/>
+        tabBarIcon: () => <Image source={require('../icons/pngs/categories_icon_gry.png')} style={styles.icon}/>
 
     };
 
@@ -61,13 +62,13 @@ const styles = StyleSheet.create({
     },
     logo : {
         resizeMode:'cover',
-        margin: 15,
+        margin: vs(8),
         alignSelf:'center'
 
     },
     icon: {
-        width:24,
-        height:24,
+        width:vs(13),
+        height:vs(13),
         resizeMode:'cover',
     },
 });

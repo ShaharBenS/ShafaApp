@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         textAlign: 'right',
         padding: 10,
-        fontFamily: 'OpenSansHebrewCondensed-Regular',
+        fontFamily: 'OpenSansHebrew-Regular',
         color: '#4a4a4a',
 
 

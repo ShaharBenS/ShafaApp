@@ -6,7 +6,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest"
   },
-  "proxy": "http://localhost:3000",
+  "proxy": "http://5.29.76.113:3000/",
   "dependencies": {
     "native-base": "^2.3.10",
     "npm-install-peers": "^1.2.1",
