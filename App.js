@@ -7,9 +7,12 @@
 import React, { Component } from 'react';
 import {
     AppRegistry,
+    Text
 } from 'react-native';
+import { SwitchNavigator } from "react-navigation";
+require('./App/Controllers/Globals');
 import { NavigationComponent } from 'react-native-material-bottom-navigation'
-import {SwitchNavigator} from "react-navigation";
+
 import FacebookLogin from "./App/Screens/FacebookLogin";
 import MainScreen from "./App/Screens/MainScreen";
 

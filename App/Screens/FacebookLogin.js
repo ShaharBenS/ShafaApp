@@ -12,7 +12,7 @@ import {
     Alert,
     Image,
     Dimensions,
-    ActivityIndicator
+    ImageBackground
 } from 'react-native';
 
 import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
@@ -20,21 +20,25 @@ import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
 let loginController = require('../Controllers/LoginController');
 
 let screenSize = Dimensions.get('window');
-let buttonSize = {height: 0.11, width: 0.85};
-let buttonPosition = {top: 0.7, left: (1 - buttonSize.width) / 2};
-let activityIndicatorPosition = {top: buttonPosition.top + buttonSize.height + 0.02};
+let buttonSize = {height: 0.09896536, width: 0.76};
+let buttonPosition = {top: 0.41070625, left: (1 - buttonSize.width) / 2};
 let onClickColor = '#f2f0ff';
+let backgroundPosition = 0.55195681511;
+let logoSize = {height: 0.2775528, width: 0.3736};
+let logoPosition = {top: 0.1003148, left: (1 - logoSize.width) / 2};
+let facebookLogoSize = {height: 0.0508322, width: 0.048};
 
 const styles = StyleSheet.create({
     loginButtonImage: {
-        flex: 0,
         height: buttonSize.height * screenSize.height,
         width: buttonSize.width * screenSize.width,
-        resizeMode: 'stretch'
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-evenly'
     },
     backgroundImage: {
-        position: 'absolute',
-        height: screenSize.height,
+        marginTop: screenSize.height * (1 - backgroundPosition),
+        height: screenSize.height * backgroundPosition,
         width: screenSize.width,
         resizeMode: 'stretch'
     },
@@ -43,18 +47,38 @@ const styles = StyleSheet.create({
         marginTop: screenSize.height * buttonPosition.top,
         marginLeft: screenSize.width * buttonPosition.left
     },
-    activityIndicatorView: {
-        marginTop: screenSize.height * activityIndicatorPosition.top,
-        flexDirection: 'row',
-        justifyContent: 'center'
+    shafaLogo: {
+        position: 'absolute',
+        height: screenSize.height * logoSize.height,
+        width: screenSize.width * logoSize.width,
+        marginTop: screenSize.height * logoPosition.top,
+        marginLeft: screenSize.width * logoPosition.left,
+    },
+    textStyle: {
+        color: "#ffffff",
+        fontSize: 19,
+        fontFamily: 'OpenSansHebrew-Regular'
+    },
+    facebookLogo: {
+        height: screenSize.height * facebookLogoSize.height,
+        width: screenSize.width * facebookLogoSize.width,
+        resizeMode: 'stretch'
     }
 });
 
 type Props = {};
-let background = require('../Images/placeholder.jpg');
-let loginButtonBackground = require('../Images/loginButton_he.png');
-let buttonView = <Image source={loginButtonBackground}
-                        style={styles.loginButtonImage}/>;
+let background = require('../Images/login/login_img.png');
+let loginButtonBackground = require('../Images/login/facebook_but_bg.png');
+let shafaLogo = require('../Images/login/shafa_logo.png');
+let facebookLogo = require('../Images/login/facebook_icon.png');
+
+let buttonView =
+    <ImageBackground source={loginButtonBackground}
+                     imageStyle={{resizeMode: 'stretch'}}
+                     style={styles.loginButtonImage}>
+        <Image source={facebookLogo} style={styles.facebookLogo}/>
+        <Text style={styles.textStyle}>התחברי עם פייסבוק</Text>
+    </ImageBackground>;
 
 
 export default class FacebookLogin extends Component<Props>
@@ -62,7 +86,7 @@ export default class FacebookLogin extends Component<Props>
     constructor(props)
     {
         super(props);
-        this.state = {user: null, shouldShowLoading: false};
+        this.state = {user: null};
     }
 
     render()
@@ -72,6 +96,7 @@ export default class FacebookLogin extends Component<Props>
         return (
             <View>
                 <Image source={background} style={styles.backgroundImage}/>
+                <Image source={shafaLogo} style={styles.shafaLogo}/>
                 <View style={styles.loginButton}>
                     <FBLogin
                         onClickColor={onClickColor}
@@ -85,75 +110,42 @@ export default class FacebookLogin extends Component<Props>
                         loginBehavior={FBLoginManager.LoginBehaviors.Native}
                         onLogin={function (data)
                         {
-                            _this.setState(previousState =>
-                            {
-                                return {user: data.credentials.user, previousStateLoading: true}
-                            });
+                            _this.setState({user: data.credentials.user});
                             let userPromise = loginController.addUser(data);
-                            userPromise.then(response =>
+                            userPromise.then(_user =>
                             {
-                                response.then(data =>
-                                {           //TODO: data.alreadyExists check if true and add a welcome back msg.
-                                    if (data.output === "SUCCESS")
-                                    {
-                                        global.user = data.user;
-                                        navigate('mainScreen');
-                                    }
-                                    else
-                                    {
-                                        Alert.alert("Error 1")
-                                    }
-                                })
-                            }).catch((err =>
-                            {
-                                _this.setState(previousState =>
+                                global.user = _user;
+                                navigate('mainScreen');
+                            })
+                                .catch(err =>
                                 {
-                                    return {shouldShowLoading: false, user: previousState.user}
-                                });
-                                Alert.alert('Error 2');
-                                console.log(err);
-                            }));
+                                    Alert.alert("שגיאה", JSON.stringify(err));
+                                    console.log(err);
+                                })
+
                         }}
                         onLogout={function ()
                         {
-                            _this.setState({user: null, shouldShowLoading: false});
+                            _this.setState({user: null});
                             navigate('loginScreen')
                         }}
                         onLoginFound={function (data)
                         {
-                            _this.setState(previousState =>
-                            {
-                                return {user: data.credentials.user, previousStateLoading: true}
-                            });
+                            _this.setState({user: data.credentials.user});
                             let userPromise = loginController.getUser(data);
-                            userPromise.then((response) =>
+                            userPromise.then(_user =>
                             {
-                                response.json().then(data =>
+                                global.user = _user;
+                                navigate('mainScreen');
+                            }).catch(err =>
                                 {
-                                    if (data.output === "SUCCESS")
-                                    {
-                                        global.user = data.user;
-                                        navigate('mainScreen');
-                                    }
-                                    else
-                                    {
-                                        Alert.alert("Error 3")
-                                    }
-                                });
-                            })
-                                .catch((err) =>
-                                {
-                                    _this.setState(previousState =>
-                                    {
-                                        return {shouldShowLoading: false, user: previousState.user}
-                                    });
+                                    Alert.alert("שגיאה",JSON.stringify(err));
                                     console.log(err);
-                                    Alert.alert("Error 4");
                                 });
                         }}
                         onLoginNotFound={function ()
                         {
-                            _this.setState({user: null, shouldShowLoading: false});
+                            _this.setState({user: null});
                         }}
                         onError={function (data)
                         {
@@ -169,10 +161,8 @@ export default class FacebookLogin extends Component<Props>
                         }}
                     />
                 </View>
-                <View style={styles.activityIndicatorView}>
-                    <ActivityIndicator size="large" color="#0000ff" animating={this.state.shouldShowLoading}/>
-                </View>
             </View>
         );
     }
+
 };

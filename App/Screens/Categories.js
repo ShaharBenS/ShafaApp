@@ -16,7 +16,26 @@ import {
 import {CategoryItem} from '../Components/CategoryItem';
 import {vs, minUnit} from '../Controllers/global';
 
+
+let data;
+
 export default class Categories extends Component<Props> {
+    constructor(props){
+        super(props);
+        data = [  {pict:require('../Images/categories/trousers_img.png')},
+            {pict:require('../Images/categories/swimsuit_img.png')},
+            {pict:require('../Images/categories/shirt_img.png')},
+            {pict:require('../Images/categories/night_img.png')},
+            {pict:require('../Images/categories/skirt_img.png')},
+            {pict:require('../Images/categories/jacket_img.png')},
+            {pict:require('../Images/categories/sweater_icon.png')},
+            {pict:require('../Images/categories/shoes_img.png')},
+            {pict:require('../Images/categories/dress_img.png')},
+            {pict:require('../Images/categories/accessories_img.png')},
+            {pict:require('../Images/categories/trousers_img.png')}]
+            .map((item,index)=>{return {pict:item.pict,namet:global.categories[index].namet,
+            id:global.categories[index].id}});
+    }
 
     static navigationOptions = {
         tabBarIcon: () => <Image source={require('../icons/pngs/categories_icon_gry.png')} style={styles.icon}/>
@@ -25,17 +44,6 @@ export default class Categories extends Component<Props> {
 
     render() {
 
-        let data=[  {pict:require('../Images/categories/trousers_img.png'),namet:"מכנסיים ואוברולים", id:'0'},
-                    {pict:require('../Images/categories/swimsuit_img.png'),namet:"בגדי ים", id:'1'},
-                    {pict:require('../Images/categories/shirt_img.png'),namet:"חולצות", id:'2'},
-                    {pict:require('../Images/categories/night_img.png'),namet:"בגדי ערב", id:'3'},
-                    {pict:require('../Images/categories/skirt_img.png'),namet:"חצאיות", id:'4'},
-                    {pict:require('../Images/categories/jacket_img.png'),namet:"מעילים וג'קטים", id:'5'},
-                    {pict:require('../Images/categories/sweater_icon.png'),namet:"סוודרים", id:'6'},
-                    {pict:require('../Images/categories/shoes_img.png'),namet:"נעליים", id:'7'},
-                    {pict:require('../Images/categories/dress_img.png'),namet:"שמלות", id:'8'},
-                    {pict:require('../Images/categories/accessories_img.png'),namet:"אקססוריז", id:'9'},
-                    {pict:require('../Images/categories/trousers_img.png'),namet:"הכל", id:'10'},];
         return (
             <View style={styles.container}>
 
