@@ -7,6 +7,7 @@ import {
     Text,
     TouchableNativeFeedback,
     TouchableOpacity,
+    PixelRatio,
 
 } from 'react-native';
 import Slider from 'react-native-slider';
@@ -49,7 +50,7 @@ export default class Filter extends Component<Props> {
                 <View>
                     {/*DISTANCE BAR*/}
                     <View style={[styles.lineDelimiter, styles.marginSides]}/>
-                    <Text style={[styles.simpleText, styles.marginBottom5]}>מרחק</Text>
+                    <Text style={styles.simpleText}>מרחק</Text>
                     <Text
                         style={[styles.progressText, {marginRight: this.state.marginTextDistance}]}>{this.state.distance} ק"מ</Text>
                     <Slider
@@ -67,7 +68,7 @@ export default class Filter extends Component<Props> {
                             distance: distance,
                             marginTextDistance: Filter.calcMargin(distance)
                         })}/>
-                    <View style={[styles.header, styles.marginBottom5]}>
+                    <View style={styles.header}>
                         <Text style={styles.quantityLeft}>{minDistance} ק"מ</Text>
                         <Text style={styles.quantityRight}>{maxDistance} ק"מ</Text>
                     </View>
@@ -75,7 +76,7 @@ export default class Filter extends Component<Props> {
                     <View style={[styles.lineDelimiter, styles.marginSides]}/>
 
                     {/*PRICE BAR*/}
-                    <Text style={[styles.simpleText, styles.marginBottom5]}>מחיר</Text>
+                    <Text style={styles.simpleText}>מחיר</Text>
                     <Text
                         style={[styles.progressText, {marginLeft: this.state.marginTextPrice}]}>{this.state.price} ₪</Text>
                     <Slider
@@ -93,7 +94,7 @@ export default class Filter extends Component<Props> {
                             price: price,
                             marginTextPrice: Filter.calcMarginPrice(price)
                         })}/>
-                    <View style={[styles.header, styles.marginBottom5]}>
+                    <View style={styles.header}>
                         <Text style={styles.quantityLeft}>{minPrice} ₪</Text>
                         <Text style={styles.quantityRight}>{maxPrice} ₪</Text>
                     </View>
@@ -112,18 +113,18 @@ export default class Filter extends Component<Props> {
     }
 
     static calcMargin(value) {
-        return window.width - vs(22) - (vs(14) - (value / 2) + value * (window.width - vs(27)) / vs(27));
+        return window.width- 1.6*sidedMargin - value*((window.width- 2*sidedMargin)/(maxDistance));
+
     }
 
     static calcMarginPrice(value) {
-        return (vs(11) - (value / 2) + value * (window.width - vs(27)) / vs(174));
+        return sidedMargin + value*((window.width- 2*sidedMargin)/(maxPrice)) - (value*0.065);
     }
 };
 
 const window = Dimensions.get('window');
-const barHeight = window.height / vs(6);
-const bottomViewHeight = window.height / vs(1.5);
-const cancelImageSize = window.width / vs(10);
+const barHeight = PixelRatio.getPixelSizeForLayoutSize(16.3);
+const cancelImageSize = PixelRatio.getPixelSizeForLayoutSize(5);
 const themePurple = '#be7ce0';
 const initialDistance = 10;
 const initialPrice = 50;
@@ -131,6 +132,7 @@ const minDistance = 1;
 const maxDistance = 50;
 const minPrice = 0;
 const maxPrice = 500;
+const sidedMargin = PixelRatio.getPixelSizeForLayoutSize(8);
 const font = 'OpenSansHebrew-Regular';
 
 
@@ -141,8 +143,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
     },
     icon: {
-        width:vs(13),
-        height:vs(13),
+        width:PixelRatio.getPixelSizeForLayoutSize(6.5),
+        height:PixelRatio.getPixelSizeForLayoutSize(6.5),
         resizeMode: 'cover',
     },
     header: {
@@ -153,90 +155,92 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     title: {
-        fontSize: vs(14),
+        fontSize: PixelRatio.getPixelSizeForLayoutSize(5.3),
         fontFamily: font,
         color: '#4a4a4a',
-        margin: vs(6)
+        margin: PixelRatio.getPixelSizeForLayoutSize(9.7)
     },
     cancel: {
         position: 'absolute',
         left: 0,
-        marginLeft: vs(8),
+        marginLeft: PixelRatio.getPixelSizeForLayoutSize(6),
         width: cancelImageSize,
         height: cancelImageSize,
     },
     arrow: {
         position: 'absolute',
         left: 0,
-        marginLeft: vs(8),
+        marginLeft: PixelRatio.getPixelSizeForLayoutSize(6),
     },
     lineDelimiter: {
-        height: vs(1),
+        height: 1,
         backgroundColor: '#c5c2c2'
     },
     simpleText: {
         fontFamily: font,
-        fontSize: vs(13),
-        margin: vs(13),
+        fontSize: PixelRatio.getPixelSizeForLayoutSize(5.3),
+        marginRight: PixelRatio.getPixelSizeForLayoutSize(7.7),
+        marginTop: PixelRatio.getPixelSizeForLayoutSize(7.7),
+        marginBottom: PixelRatio.getPixelSizeForLayoutSize(2.7),
+
     },
     progressbar: {
-        marginRight: vs(13),
-        marginLeft: vs(13),
+        marginRight: sidedMargin,
+        marginLeft: sidedMargin,
     },
     progressThumb: {
         borderColor: themePurple,
-        borderWidth: vs(2),
-        width: vs(15),
-        height: vs(15),
-        borderRadius: vs(11)
+        borderWidth: PixelRatio.getPixelSizeForLayoutSize(0.5),
+        width: PixelRatio.getPixelSizeForLayoutSize(7),
+        height: PixelRatio.getPixelSizeForLayoutSize(7),
+        borderRadius: PixelRatio.getPixelSizeForLayoutSize(10)
     },
     progressTrack: {
         backgroundColor: themePurple,
-        height: vs(3),
+        height: PixelRatio.getPixelSizeForLayoutSize(2),
     },
     progressText: {
         fontFamily: font,
-        fontSize: vs(13),
+        fontSize: PixelRatio.getPixelSizeForLayoutSize(4.7),
         color: themePurple,
     },
     quantityRight: {
         fontFamily: font,
-        fontSize: vs(11),
+        fontSize: PixelRatio.getPixelSizeForLayoutSize(4.7),
         position: 'absolute',
         right: 0,
-        marginRight: vs(13),
+        marginRight: PixelRatio.getPixelSizeForLayoutSize(6.7),
     },
     quantityLeft: {
         fontFamily: font,
-        fontSize: vs(11),
+        fontSize: PixelRatio.getPixelSizeForLayoutSize(4.7),
         position: 'absolute',
         left: 0,
-        marginLeft: vs(13),
+        marginLeft: PixelRatio.getPixelSizeForLayoutSize(6.7),
     },
     searchButton: {
         alignSelf: 'center',
         borderColor: '#000',
-        borderWidth: vs(2),
-        marginTop: vs(16)
+        borderWidth: 2,
+        marginTop: PixelRatio.getPixelSizeForLayoutSize(25)
 
     },
     smallText: {
-        paddingRight: vs(22),
-        paddingLeft: vs(22),
-        padding: vs(3),
+        paddingRight: PixelRatio.getPixelSizeForLayoutSize(13),
+        paddingLeft: PixelRatio.getPixelSizeForLayoutSize(13),
+        padding: PixelRatio.getPixelSizeForLayoutSize(2),
         fontFamily: font,
-        fontSize: vs(11),
+        fontSize: PixelRatio.getPixelSizeForLayoutSize(4.7),
         color: '#000'
     },
     alignRight: {
         position: 'absolute',
         right: 0,
-        marginRight: vs(13)
+        marginRight: PixelRatio.getPixelSizeForLayoutSize(7.7)
     },
     marginSides: {
-        marginRight: vs(13),
-        marginLeft: vs(13)
+        marginRight: PixelRatio.getPixelSizeForLayoutSize(4),
+        marginLeft: PixelRatio.getPixelSizeForLayoutSize(4)
     },
-    marginBottom5: {marginBottom: vs(3)}
 
 });

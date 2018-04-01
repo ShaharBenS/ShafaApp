@@ -15,9 +15,9 @@ import SelectMeasure from "./SelectMeasure";
 
 const mainView = TabNavigator(
     {
+        Filter: {screen: Filter},
         Categories: {screen: Categories},
         AddItem: {screen: AddItem},
-        Filter: {screen: Filter},
         SelectMeasure: {screen: SelectMeasure},
         ItemsGallery: {screen: ItemsGallery},
         Chats: {screen: Chats},
