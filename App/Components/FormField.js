@@ -149,7 +149,7 @@ export class LocationField extends Component
                 }
             }}
 
-            //currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
+            currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
             currentLocationLabel="מיקום נוכחי"
             nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
 

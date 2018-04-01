@@ -72,6 +72,7 @@ export default class AddItem extends Component<props>
             }
         }, 1000);
 
+        const {navigate} = this.props.navigation;
 
         categoriesLabelsAndValues = global.categories.map(cat =>
         {
@@ -89,7 +90,6 @@ export default class AddItem extends Component<props>
 
     render()
     {
-        const {navigate} = this.props.navigation;
         let _this = this;
         return (
             <View>

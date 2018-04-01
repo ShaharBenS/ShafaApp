@@ -9,3 +9,7 @@ global.categories = [   {namet:"מכנסיים ואוברולים", id:'0'},
                         {namet:"שמלות", id:'8'},
                         {namet:"אקססוריז", id:'9'},
                         {namet:"הכל", id:'10'},];
+
+global.currentCategoryID = global.categories.length - 1;
+
+global.currentLocation = {};

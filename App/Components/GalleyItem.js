@@ -5,37 +5,53 @@ import {
     Text,
     TouchableOpacity,
     View,
-    Dimensions
+    Dimensions,Alert
 } from 'react-native';
 import {vs, minUnit} from '../Controllers/global';
 
+
+let distanceController = require('../Controllers/DistanceController');
+
+let imgURI,profileURI,unlike,like;
+let brandNameShort;
 export class GalleyItem extends Component<props> {
 
+    constructor(props)
+    {
 
-
-    constructor(props) {
+        props.item.distance = '';
         super(props);
-        this.state = {like: false};
+        this.state = { like: global.user.likedItems.indexOf(props.item.owner) > -1 };
+
+
+
+        unlike = require('../icons/pngs/like_icon.png');
+        like = require('../icons/pngs/like_icon_selected.png');
     }
 
 
     render() {
+        imgURI = 'http://'+this.props.item.images[0];
+        profileURI = 'http://graph.facebook.com/'+this.props.item.userFacebookID+'/picture?type=square';
+        let brandNameShort = JSON.parse(JSON.stringify(this.props.item.manufacturer)).split(' ')[0];
 
-        let img = require('../Images/placeholder.jpg');
-        let logo = require('../Images/loginButton_he.png');
-        let unlike = require('../icons/pngs/like_icon.png');
-        let like = require('../icons/pngs/like_icon_selected.png');
+        this.props.item.distance = (distanceController.distance(
+            global.currentLocation,
+            {lng:this.props.item.location.coordinates[0],lat:this.props.item.location.coordinates[1]}));
+        this.props.item.distance = distanceController.metersToLabel(this.props.item.distance);
 
         return (
             <View id={'container'} style={styles.container}>
-                <View id={'upper'}>
-                    <Image id={'item'} source={img} style={styles.itemPic}/>
+                <View id={'upper'} >
+                    <Image id={'item'} source={{uri:imgURI}} style={styles.itemPic}/>
                     <TouchableOpacity activeOpacity={0.5} style={styles.profilePicTouchable}>
-                        <Image id={'profile'} source={logo} style={styles.profilePic}/>
+                    <Image id={'profile'} source={{uri:profileURI}} style={styles.profilePic}/>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.setState({like: !this.state.like})} activeOpacity={0.5}
-                                      style={styles.like}>
-                        <Image id={'like'} source={this.state.like ? like : unlike}/>
+                    <TouchableOpacity onPress={()=>{
+                        //TODO: when liking
+                        this.setState({like: !this.state.like})}
+                    } activeOpacity={0.5} style={styles.like}>
+                        <Image id={'like'} source={this.state.like ? like : unlike} />
                     </TouchableOpacity>
                 </View>
                 <View id={'info'} style={styles.textualInfo}>
@@ -43,15 +59,21 @@ export class GalleyItem extends Component<props> {
                     <View id={'infoSpec'} style={styles.infoSpec}>
                         <Text numberOfLines={1} style={styles.simpleFontSize}>
                             <Text id={'company'}>{this.props.itemCompany}</Text>
+                        <Text style={styles.simpleFontSize}>
+                            <Text id={'company'} >{brandNameShort}</Text>
                             <Text> • </Text>
-                            <Text id={'distance'}>{this.props.itemDistance}</Text>
+                            <Text id={'distance'}>
+                                {this.props.item.distance.value}
+                                {' '}
+                                {this.props.item.distance.measurement}
+                            </Text>
                             <Text> • </Text>
-                            <Text id={'size'}>{this.props.itemSize}</Text>
+                            <Text id={'size'} >{this.props.item.size}</Text>
                         </Text>
                     </View>
-                    <Text id={'price'} style={styles.price}>{this.props.itemPrice}₪</Text>
+                    <Text id={'price'} style={styles.price}>{this.props.item.price+' ש"ח'}</Text>
                     <TouchableOpacity activeOpacity={0.5} style={styles.buyButton}>
-                        <Text id={'buy'} style={styles.buyText}>BUY</Text>
+                        <Text id={'buy'} style={styles.buyText}>לקנייה</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -133,22 +155,15 @@ const styles = StyleSheet.create({
         marginLeft: vs(5),
         marginTop: -vs(3)
     },
-    price: {marginTop: vs(3), color: colorBlack, fontSize: vs(10), fontFamily: 'OpenSansHebrew-Regular'},
+    price: {marginTop: 5, color: colorBlack, fontSize:18, fontFamily: 'OpenSansHebrewCondensed-Regular' },
     buyButton: {
         borderColor: colorBlack,
-        borderWidth: vs(1),
-        width: 'auto',
+        borderWidth: 1,
+        width: '70%',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: vs(8),
+        marginTop: 10,
     },
-    buyText: {
-        fontSize: vs(10),
-        color: colorBlack,
-        margin: vs(3),
-        paddingRight: vs(10),
-        paddingLeft: vs(10),
-        fontFamily: 'OpenSansHebrew-Regular',
-    },
+    buyText: {fontSize:18, color:colorBlack, margin: 5, fontFamily: 'OpenSansHebrewCondensed-Regular',},
 
 });

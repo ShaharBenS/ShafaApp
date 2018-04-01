@@ -13,6 +13,7 @@ import {
     Text,
     Dimensions,
     TouchableOpacity,
+    Alert,
 
 } from 'react-native';
 import PopupDialog from 'react-native-popup-dialog';
@@ -20,34 +21,85 @@ import {vs, minUnit} from '../Controllers/global';
 import {GalleyItem} from '../Components/GalleyItem';
 import {SelectorItem} from '../Components/SelectorItem';
 
+let itemsController = require('../Controllers/ItemsContoller');
+let maxChunksParallel = 50;
+let itemsPerChunk = 50;
 
-export default class ItemsGallery extends Component<Props> {
+let textArray = ["הכי קרוב אלי", "מהזול ליקר", "מהיקר לזול", "החדש ביותר"];
+
+export default class ItemsGallery extends Component<Props>
+{
 
     static navigationOptions = {
         labelStyle: {display: 'none'},
         tabBarIcon: () => <Image source={require('../icons/pngs/categories_icon_gry.png')} style={styles.icon}/>
     };
 
-    constructor(props) {
+    constructor(props)
+    {
         super(props);
-        this.state = {  selectedIndex: 2,
-                        disableArray: [true, false, true, true] };
+        const {navigate} = this.props.navigation;
+
+
+        this.state = {
+            selectedIndex: 2,
+            disableArray: [true, false, true, true],
+            items: []
+        };
+
+        this.changeSort(-1,0);
+
     }
 
-    render() {
-        let data = [{id: '1'}, {id: '2'}, {id: '3'}, {id: '4'}, {id: '5'}];
+    changeSort(index,chunkNumber)
+    {
+        let location = undefined;
+        let sortStrategy = null;
+        switch(index){
+            case 0:
+                sortStrategy = 'closest';
+                location = [global.currentLocation.lng,global.currentLocation.lat];
+                break;
+            case 1:
+                sortStrategy = 'cheapest';
+                break;
+            case 2:
+                sortStrategy = 'expansive';
+                break;
+            case 3:
+                sortStrategy = 'newest';
+                break;
+            default:
+                sortStrategy = 'random';
+                break;
+        }
+        itemsController.getItems(global.currentCategoryID, sortStrategy, chunkNumber, itemsPerChunk,
+            location)
+            .then(items =>
+            {
+                this.setState({items: items});
+            })
+            .catch(err =>
+            {
+                Alert.alert('שגיאה', JSON.stringify(err))
+            });
+    }
 
-        let textArray = ["הכי קרוב אלי","מהזול ליקר","מהיקר לזול","החדש ביותר"];
+    render()
+    {
+
         let selectorsArray = [];
-        for(let i=0; i<textArray.length; i++)
+
+        for (let i = 0; i < textArray.length; i++)
         {
             selectorsArray.push(<SelectorItem textToDisplay={textArray[i]} disableDot={this.state.disableArray[i]}
-                                              onPress={()=> {
+                                              onPress={() =>
+                                              {
                                                   let disables = this.state.disableArray;
-                                                  for(let j=0; j<textArray.length; j++)
+                                                  for (let j = 0; j < textArray.length; j++)
                                                       disables[j] = j !== i;
                                                   this.setState({selectedIndex: i, disableArray: disables});
-                                                  this.popupDialog.dismiss();
+                                                  this.changeSort(i,0);
                                               }
                                               }/>)
         }
@@ -92,11 +144,14 @@ export default class ItemsGallery extends Component<Props> {
 
                 <FlatList
                     numColumns={2}
-                    data={data}
-                    renderItem={({item}) => <GalleyItem/>}
-                    keyExtractor={item => item.id}
-
+                    data={this.state.items}
+                    renderItem={(item) =>
+                    {
+                        return <GalleyItem item={item.item}/>
+                    }}
+                    keyExtractor={(items, index) => index}
                 />
+
 
             </View>
         );
