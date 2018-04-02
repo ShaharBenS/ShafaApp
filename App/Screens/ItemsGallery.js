@@ -189,9 +189,12 @@ class ItemsPage extends Component<Props>
                         {
                             global.currentItem = _item;
                             navigate('ItemPage')
-                        }} initialState = {global.user.likedItems.indexOf(item.item._id) > -1} item = {item.item}/>
+                        }} initialLikeState = {global.user.likedItems.indexOf(item.item._id) > -1}
+                                           item = {item.item}/>
                     }}
-                    keyExtractor={(items, index) => index}
+                    keyExtractor={(item, index) => {
+                        return item._id;
+                    }}
                 />
 
 
