@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 
-import {NavigationComponent} from 'react-native-material-bottom-navigation'
 import {TabNavigator} from "react-navigation";
 
 import Categories from "./Categories";
@@ -15,17 +14,16 @@ import SelectMeasure from "./SelectMeasure";
 
 const mainView = TabNavigator(
     {
-        Filter: {screen: Filter},
+        //Filter: {screen: Filter},
         Categories: {screen: Categories},
         AddItem: {screen: AddItem},
-        SelectMeasure: {screen: SelectMeasure},
+        //SelectMeasure: {screen: SelectMeasure},
         ItemsGallery: {screen: ItemsGallery},
         //Chats: {screen: Chats},
         //Favorites: {screen: Favorites},
         Profile: {screen: Profile}
     },
     {
-        tabBarComponent: NavigationComponent,
         tabBarPosition: 'bottom',
         tabBarOptions: {
             bottomNavigationOptions: {

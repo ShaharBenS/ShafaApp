@@ -23,7 +23,7 @@ export class GalleyItem extends Component<props>
         props.item.distance = '';
         super(props);
         //TODO: make sure the global.user.likedItems is always sorted
-        this.state = {like: global.user.likedItems.indexOf(props.item.owner._id) > -1};
+        this.state = {like: global.user.likedItems.indexOf(props.item._id) > -1};
 
         unlike = require('../icons/pngs/like_icon.png');
         like = require('../icons/pngs/like_icon_selected.png');
