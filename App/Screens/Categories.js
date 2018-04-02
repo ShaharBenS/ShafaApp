@@ -10,11 +10,10 @@ import {
     View,
     FlatList,
     Image,
-    Dimensions,
+    Dimensions, PixelRatio,
 
 } from 'react-native';
 import {CategoryItem} from '../Components/CategoryItem';
-import {vs, minUnit} from '../Controllers/global';
 
 
 let data;
@@ -49,10 +48,10 @@ export default class Categories extends Component<Props>
 
 
         navigateToItems = (category)=>
-        {
-            global.currentCategoryID = category.id;
-            navigate('ItemsGallery')
-        };
+    {
+        global.currentCategoryID = category.id;
+        navigate('ItemsGallery')
+    };
     }
 
     static navigationOptions = {
@@ -79,11 +78,6 @@ export default class Categories extends Component<Props>
     }
 };
 
-
-const percent = 0.1;
-const window = Dimensions.get('window');
-const renderedHeight = percent * window.height;
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -91,13 +85,13 @@ const styles = StyleSheet.create({
     },
     logo : {
         resizeMode:'cover',
-        margin: vs(8),
+        margin: PixelRatio.getPixelSizeForLayoutSize(5),
         alignSelf:'center'
 
     },
     icon: {
-        width:vs(13),
-        height:vs(13),
+        width:PixelRatio.getPixelSizeForLayoutSize(6.5),
+        height:PixelRatio.getPixelSizeForLayoutSize(6.5),
         resizeMode:'cover',
     },
 });

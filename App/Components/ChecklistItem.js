@@ -5,8 +5,8 @@ import {
     Text,
     TouchableOpacity,
     View,
+    PixelRatio,
 } from 'react-native';
-import {vs, minUnit} from '../Controllers/global';
 
 export class ChecklistItem extends Component<props> {
 
@@ -15,11 +15,12 @@ export class ChecklistItem extends Component<props> {
         return (
             <View style={styles.container}>
                 <TouchableOpacity style={{flex: 1}} onPress={this.props.onPress}>
-                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end', marginLeft: vs(15), marginRight: vs(15)}}>
+                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end', marginLeft: PixelRatio.getPixelSizeForLayoutSize(7),
+                                                        marginRight: PixelRatio.getPixelSizeForLayoutSize(7)}}>
                         <Image source={require('../icons/pngs/checkedIcon.png')}
                                style={[styles.selector, !this.props.checked && {height: 0}]}/>
                         <Text
-                            style={[styles.simpleText, {marginRight: vs(6)}, this.props.checked && {color: '#000000'}]}>{this.props.textToDisplay}</Text>
+                            style={[styles.simpleText, this.props.checked && {color: '#000000'}]}>{this.props.textToDisplay}</Text>
                     </View>
                 </TouchableOpacity>
                 <View style={styles.lineDelimiter}/>
@@ -32,12 +33,12 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        height: vs(30),
+        height: PixelRatio.getPixelSizeForLayoutSize(16),
 
     },
     selector: {
-        width: vs(8),
-        height: vs(8),
+        width: PixelRatio.getPixelSizeForLayoutSize(4.7),
+        height: PixelRatio.getPixelSizeForLayoutSize(5.7),
         position: 'absolute',
         left: 0,
         alignSelf: 'center'
@@ -47,13 +48,13 @@ const styles = StyleSheet.create({
         right: 0,
         alignSelf: 'center',
         fontFamily: 'OpenSansHebrew-Regular',
-        fontSize: vs(12),
+        fontSize: PixelRatio.getPixelSizeForLayoutSize(5.3),
     },
     lineDelimiter: {
-        height: vs(1),
+        height: PixelRatio.getPixelSizeForLayoutSize(0.5),
         backgroundColor: '#c5c2c2',
-        marginRight: vs(15),
-        marginLeft: vs(15),
+        marginRight: PixelRatio.getPixelSizeForLayoutSize(7),
+        marginLeft: PixelRatio.getPixelSizeForLayoutSize(7),
     },
 
 });

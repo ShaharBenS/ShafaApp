@@ -7,10 +7,9 @@ import {
     Text,
     Dimensions,
     TouchableOpacity,
+    PixelRatio,
 
 } from 'react-native';
-import {vs} from "../Controllers/global";
-import {GalleyItem} from "../Components/GalleyItem";
 import {ChecklistItem} from "../Components/ChecklistItem";
 
 
@@ -107,8 +106,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
     },
     icon: {
-        width: vs(13),
-        height: vs(13),
+        width: PixelRatio.getPixelSizeForLayoutSize(6.5),
+        height: PixelRatio.getPixelSizeForLayoutSize(6.5),
         resizeMode: 'cover',
     },
     header: {
@@ -119,18 +118,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     categoryName: {
-        fontSize: vs(13),
+        fontSize: PixelRatio.getPixelSizeForLayoutSize(5.3),
         fontFamily: 'OpenSansHebrew-Regular',
         color: '#4a4a4a',
-        margin: vs(5)
+        margin: PixelRatio.getPixelSizeForLayoutSize(7)
     },
     backArrow: {
         position: 'absolute',
         right: 0,
-        marginRight: vs(8),
+        marginRight: PixelRatio.getPixelSizeForLayoutSize(6),
     },
     lineDelimiter: {
-        height: vs(1),
+        height: PixelRatio.getPixelSizeForLayoutSize(0.5),
         backgroundColor: '#c5c2c2'
     },
     options: {
@@ -147,11 +146,11 @@ const styles = StyleSheet.create({
     simpleText: {
         alignSelf: 'center',
         fontFamily: 'OpenSansHebrew-Regular',
-        fontSize: vs(11),
+        fontSize: PixelRatio.getPixelSizeForLayoutSize(5.3),
     },
     upperBar: {
-        height: vs(16),
-        width: vs(1),
+        height: PixelRatio.getPixelSizeForLayoutSize(9),
+        width: PixelRatio.getPixelSizeForLayoutSize(0.5),
         backgroundColor: '#c5c2c2'
     },
 });

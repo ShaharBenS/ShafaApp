@@ -13,19 +13,23 @@ import {
     Text,
     Dimensions,
     TouchableOpacity,
-    Alert,
+    Alert, PixelRatio,
 
 } from 'react-native';
 import PopupDialog from 'react-native-popup-dialog';
-import {vs, minUnit} from '../Controllers/global';
 import {GalleyItem} from '../Components/GalleyItem';
 import {SelectorItem} from '../Components/SelectorItem';
+import { StackNavigator } from 'react-navigation';
+import Filter from "./Filter";
 
-let itemsController = require('../Controllers/ItemsContoller');
-let maxChunksParallel = 50;
-let itemsPerChunk = 50;
 
-let textArray = ["הכי קרוב אלי", "מהזול ליקר", "מהיקר לזול", "החדש ביותר"];
+const itemsController = require('../Controllers/ItemsContoller');
+const maxChunksParallel = 50;
+const itemsPerChunk = 50;
+const dialogHeight = PixelRatio.getPixelSizeForLayoutSize(75);
+const textArray = ["הכי קרוב אלי", "מהזול ליקר", "מהיקר לזול", "החדש ביותר"];
+
+
 
 export default class ItemsGallery extends Component<Props>
 {
@@ -87,6 +91,7 @@ export default class ItemsGallery extends Component<Props>
 
     render()
     {
+        let {navigate} = this.props.navigation;
 
         let selectorsArray = [];
 
@@ -115,7 +120,7 @@ export default class ItemsGallery extends Component<Props>
                 </View>
                 <View style={styles.lineDelimiter}/>
                 <View style={styles.options}>
-                    <TouchableOpacity style={styles.simpleView}>
+                    <TouchableOpacity style={styles.simpleView} onPress={()=> navigate('Filter')}>
                         <Text style={styles.simpleText}>סינון</Text>
                     </TouchableOpacity>
 
@@ -160,10 +165,6 @@ export default class ItemsGallery extends Component<Props>
 
 };
 
-const percentHeight = 0.1;
-const window = Dimensions.get('window');
-const renderedHeight = percentHeight * window.height;
-const dialogHeight = vs(150);
 
 const styles = StyleSheet.create({
     container: {
@@ -171,8 +172,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
     },
     icon: {
-        width: vs(13),
-        height: vs(13),
+        width: PixelRatio.getPixelSizeForLayoutSize(6.5),
+        height: PixelRatio.getPixelSizeForLayoutSize(6.5),
         resizeMode: 'cover',
     },
     header: {
@@ -183,18 +184,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     categoryName: {
-        fontSize: vs(13),
+        fontSize: PixelRatio.getPixelSizeForLayoutSize(5.3),
         fontFamily: 'OpenSansHebrew-Regular',
         color: '#4a4a4a',
-        margin: vs(5)
+        margin: PixelRatio.getPixelSizeForLayoutSize(2)
     },
     backArrow: {
         position: 'absolute',
         right: 0,
-        marginRight: vs(8),
+        marginRight: PixelRatio.getPixelSizeForLayoutSize(4),
     },
     lineDelimiter: {
-        height: vs(1),
+        height: PixelRatio.getPixelSizeForLayoutSize(0.5),
         backgroundColor: '#c5c2c2'
     },
     options: {
@@ -211,27 +212,27 @@ const styles = StyleSheet.create({
     simpleText: {
         alignSelf: 'center',
         fontFamily: 'OpenSansHebrew-Regular',
-        fontSize: vs(11),
+        fontSize: PixelRatio.getPixelSizeForLayoutSize(5.3),
     },
     dialogStyle: {
-        margin: vs(11)
+        margin: PixelRatio.getPixelSizeForLayoutSize(5)
     },
     selector: {
-        width: vs(8),
-        height: vs(8),
-        borderRadius: vs(16),
+        width: PixelRatio.getPixelSizeForLayoutSize(4),
+        height: PixelRatio.getPixelSizeForLayoutSize(4),
+        borderRadius: PixelRatio.getPixelSizeForLayoutSize(20),
         backgroundColor: '#be7ce0',
         alignSelf: 'center'
     },
     upperBar: {
-        height: vs(16),
-        width: vs(1),
+        height: PixelRatio.getPixelSizeForLayoutSize(9),
+        width: PixelRatio.getPixelSizeForLayoutSize(0.5),
         backgroundColor: '#c5c2c2'
     },
     dialogCustom: {
-        marginTop: -vs(110),
-        paddingRight: vs(16),
-        paddingLeft: vs(16)
+        marginTop: -PixelRatio.getPixelSizeForLayoutSize(50),
+        paddingRight: PixelRatio.getPixelSizeForLayoutSize(8),
+        paddingLeft: PixelRatio.getPixelSizeForLayoutSize(8)
     }
 
 

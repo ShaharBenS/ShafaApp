@@ -11,15 +11,16 @@ import {
 
 } from 'react-native';
 import Slider from 'react-native-slider';
-import {vs, minUnit} from '../Controllers/global';
+
+let navigateToSizes;
 
 export default class Filter extends Component<Props> {
 
     static navigationOptions = {
+        title: 'Filter',
         tabBarIcon: () => <Image source={require('../icons/pngs/categories_icon_gry.png')} style={styles.icon}/>
 
     };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -28,9 +29,19 @@ export default class Filter extends Component<Props> {
             marginTextDistance: Filter.calcMargin(initialDistance),
             marginTextPrice: Filter.calcMarginPrice(initialPrice)
         };
+
+        const {navigate} = this.props.navigation;
+
+        navigateToSizes = ()=>
+        {
+            navigate('SelectMeasure')
+        };
+
+
     }
 
     render() {
+
         return (
             <View style={styles.container}>
                 {/*HEAD*/}
@@ -40,7 +51,7 @@ export default class Filter extends Component<Props> {
                 </View>
                 <View style={styles.lineDelimiter}/>
                 {/*SIZE*/}
-                <TouchableNativeFeedback>
+                <TouchableNativeFeedback onPress={()=>navigateToSizes()}>
                     <View style={styles.header}>
                         <Image style={styles.arrow} source={require('../icons/pngs/next_arrow_left.png')}/>
                         <Text style={[styles.title, styles.alignRight]}>מידה</Text>
