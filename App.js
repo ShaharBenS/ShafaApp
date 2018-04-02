@@ -8,12 +8,12 @@ import React, { Component } from 'react';
 import {
     AppRegistry,
 } from 'react-native';
-import { SwitchNavigator } from "react-navigation";
 require('./App/Controllers/Globals');
 
+
+import { SwitchNavigator } from "react-navigation";
 import FacebookLogin from "./App/Screens/FacebookLogin";
 import MainScreen from "./App/Screens/MainScreen";
-import ItemPage from "./App/Screens/ItemPage";
 
 let refreshLocationRate = 30000;
 
@@ -37,7 +37,6 @@ let App = SwitchNavigator({
     mainScreen: {screen: MainScreen},
     },
 );
-App = ItemPage;
 
 export default App;
 AppRegistry.registerComponent('App', () => App);

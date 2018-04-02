@@ -12,15 +12,17 @@ import {
 
 } from 'react-native';
 
-
 let distanceController = require('../Controllers/DistanceController');
 
 let imgURI, profileURI, unlike, like;
 let brandNameShort;
 
-export class GalleyItem extends Component<props> {
 
-    constructor(props) {
+export class GalleyItem extends Component<props>
+{
+
+    constructor(props)
+    {
         props.item.distance = '';
         super(props);
         //TODO: make sure the global.user.likedItems is always sorted
@@ -30,7 +32,8 @@ export class GalleyItem extends Component<props> {
         like = require('../icons/pngs/like_icon_selected.png');
     }
 
-    render() {
+    render()
+    {
         imgURI = 'http://' + this.props.item.images[0];
         profileURI = 'http://graph.facebook.com/' + this.props.item.owner.userFacebookID + '/picture?type=square';
         let brandNameShort = JSON.parse(JSON.stringify(this.props.item.manufacturer)).split(' ')[0];
@@ -43,13 +46,16 @@ export class GalleyItem extends Component<props> {
         return (
             <View id={'container'} style={styles.container}>
                 <View id={'upper'}>
-                    <TouchableNativeFeedback onPress={()=>{/* TODO: shahar. here :D */}}>
+                    <TouchableNativeFeedback onPress={()=>{
+                        this.props.onPressCallback(this.props.item)
+                    }}>
                         <Image id={'item'} source={{uri: imgURI}} style={styles.itemPic}/>
                     </TouchableNativeFeedback>
                     <TouchableOpacity activeOpacity={0.5} style={styles.profilePicTouchable}>
                         <Image id={'profile'} source={{uri: profileURI}} style={styles.profilePic}/>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity onPress={() =>
+                    {
                         //TODO: when liking
                         this.setState({like: !this.state.like})
                     }

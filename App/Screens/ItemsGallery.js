@@ -18,11 +18,11 @@ import {
 
 } from 'react-native';
 import PopupDialog from 'react-native-popup-dialog';
-import {vs, minUnit} from '../Controllers/global';
 import {GalleyItem} from '../Components/GalleyItem';
 import {SelectorItem} from '../Components/SelectorItem';
-import { StackNavigator } from 'react-navigation';
+import {StackNavigator, SwitchNavigator} from 'react-navigation';
 import Filter from "./Filter";
+import ItemPage from "./ItemPage";
 
 
 const itemsController = require('../Controllers/ItemsContoller');
@@ -50,7 +50,7 @@ let selectedIndexToName = (index) =>
 };
 
 
-export default class ItemsGallery extends Component<Props>
+class ItemsPage extends Component<Props>
 {
 
     static navigationOptions = {
@@ -125,7 +125,10 @@ export default class ItemsGallery extends Component<Props>
                 </View>
                 <View style={styles.lineDelimiter}/>
                 <View style={styles.options}>
-                    <TouchableOpacity style={styles.simpleView} onPress={()=> navigate('Filter')}>
+                    <TouchableOpacity style={styles.simpleView} onPress={() =>
+                    {
+                        navigate('Filter')
+                    }}>
                         <Text style={styles.simpleText}>סינון</Text>
                     </TouchableOpacity>
 
@@ -162,21 +165,27 @@ export default class ItemsGallery extends Component<Props>
                         itemsController.getItems(global.currentCategoryID, preference,
                             currentChunk * itemsPerChunk, itemsPerChunk, preference === 'closest' ?
                                 [global.currentLocation.lng, global.currentLocation.lat]
-                                : undefined).then(items =>{
+                                : undefined).then(items =>
+                        {
                             this.setState(previousState =>
                             {
                                 return {items: [...previousState.items, ...items]}
-                            })}).catch(err =>
-                            {
-                                Alert.alert("שגיאה", JSON.stringify(err))
-                            });
+                            })
+                        }).catch(err =>
+                        {
+                            Alert.alert("שגיאה", JSON.stringify(err))
+                        });
                     }}
                     onEndReachedThreshold={0.9}
                     numColumns={2}
                     data={this.state.items}
                     renderItem={(item) =>
                     {
-                        return <GalleyItem item={item.item}/>
+                        return <GalleyItem onPressCallback={(_item) =>
+                        {
+                            global.currentItem = _item;
+                            navigate('ItemPage')
+                        }} item={item.item}/>
                     }}
                     keyExtractor={(items, index) => index}
                 />
@@ -187,7 +196,15 @@ export default class ItemsGallery extends Component<Props>
     }
 
 
-};
+}
+
+
+let ItemsGallery = SwitchNavigator({
+    ItemsPage: {screen: ItemsPage},
+    ItemPage: {screen: ItemPage},
+});
+
+export default ItemsGallery;
 
 
 const styles = StyleSheet.create({

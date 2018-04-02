@@ -7,10 +7,10 @@ import {
     TouchableHighlight,
     Alert,
     Dimensions,
-    PixelRatio
+    PixelRatio,
+    ScrollView
 } from 'react-native';
 import {Pages} from 'react-native-pages'
-import {vs} from "../Controllers/global";
 
 
 let screenSize = Dimensions.get('window');
@@ -23,17 +23,28 @@ let likeHeartSelected = require('../icons/pngs/like_icon_selected.png');
 let detailString = ' 1320 SH • 1023 KM • Size 32Leg 45 Waist • ASOS TAIL COMPANY';
 export default class ItemPage extends Component
 {
+    constructor(props){
+        super(props);
+        this.state = {item:global.currentItem};
+        this.state.item.distance.label = this.state.item.distance.value+' '+
+            this.state.item.distance.measurement;
+    }
+
     render()
     {
+        const {navigate} = this.props.navigation;
+
         return (
-            <View style={styles.pageView}>
+            <ScrollView contentContainerStyle={styles.pageView}>
                 {/*Header*/}
                 <View style={styles.headerStyle}>
                     <Image style={styles.shareIcon} resizeMode={'stretch'} source={shareIcon}/>
                     <View style={styles.itemNameView}>
-                        <Text style={styles.textRegular}>שמלה מכופתרת צהובה</Text>
+                        <Text style={styles.textRegular}>{this.state.item.name}</Text>
                     </View>
-                    <Image style={styles.backArrow} resizeMode={'stretch'} source={backArrow}/>
+                    <TouchableHighlight underlayColor={'#fff'} style = {styles.backArrowButton} onPress={()=>{navigate('ItemsPage')}} >
+                        <Image style={styles.backArrow} resizeMode={'stretch'} source={backArrow}/>
+                    </TouchableHighlight>
                 </View>
 
                 {/*Body*/}
@@ -41,35 +52,23 @@ export default class ItemPage extends Component
                 {/*Images View*/}
                 <View style={styles.imagesView}>
                     <Pages>
-                        <Image resizeMode={'cover'}
-                               style={styles.imageStyle}
-                               source={{uri: 'http://images.asos-media.com/products/asos-design-mix-match-tailored-blazer/8890584-1-popgreen'}}/>
-                        <Image
-                            resizeMode={'cover'}
-                            style={styles.imageStyle}
-                            source={{uri: 'http://images.asos-media.com/products/asos-design-mix-match-tailored-blazer/8890584-2'}}/>
-                        <Image
-                            resizeMode={'cover'}
-                            style={styles.imageStyle}
-                            source={{uri: 'http://images.asos-media.com/products/asos-design-mix-match-tailored-blazer/8890584-3'}}/>
-                    </Pages>
+                        {this.state.item.images.map(image=>{
+                            return <Image resizeMode={'cover'}
+                                          style={styles.imageStyle}
+                                          source={{uri: 'http://'+image}}/>
+                        })}
+                       </Pages>
                 </View>
 
                 {/*Details about the item*/}
                 <Text style={[styles.textRegular,{textAlign:'center'}]}>
-                    {detailString}
-                    {/*<Text style={styles.textRegular}>1320 ש"ח</Text>
-                    <Text style={styles.textRegular}>•</Text>
-                    <Text style={styles.textRegular}>103 ק"מ</Text>
-                    <Text style={styles.textRegular}>•</Text>
-                    <Text style={styles.textRegular}>מידה 34Leg 24Waist</Text>
-                    <Text style={styles.textRegular}>•</Text>
-                    <Text style={styles.textRegular}>ASOS Tall company</Text>*/}
+                    {this.state.item.price+' ₪'+' • '+this.state.item.distance.label+' • '+
+                    this.state.item.size+' • '+this.state.item.manufacturer}
                 </Text>
 
                 {/*Description*/}
                 <Text style={[styles.textRegular,{textAlign:'center'}]}>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque harum, magnam neque porro ullam voluptatem?
+                    {this.state.item.description}
                 </Text>
 
                 {/*Buy button*/}
@@ -89,7 +88,7 @@ export default class ItemPage extends Component
                         <View style={{flexDirection:'row',
                                 justifyContent:'space-between',width:screenSize.width*0.2,
                             alignItems:'center'}}>
-                            <Text style={styles.textLight}>13012</Text>
+                            <Text style={styles.textLight}>{this.state.item.likes}</Text>
                             <Image style={styles.heartStyle} source={likeHeart}/>
                         </View>
 
@@ -107,7 +106,8 @@ export default class ItemPage extends Component
                             alignItems:'center',
                             justifyContent:'space-evenly',width:screenSize.width*0.4}}>
                             <Text style = {styles.textLight}>שחר בן שטרית</Text>
-                            <Image style={styles.profilePic} source = {{uri:'http://graph.facebook.com/100010453330376/picture?type=square'}}/>
+                            <Image style={styles.profilePic} source = {{uri:'http://graph.facebook.com/'+
+                                this.state.item.owner.userFacebookID+'/picture?type=square'}}/>
                         </View>
                     </View>
                     <View style={styles.horizontalLineDelimiter}/>
@@ -115,7 +115,7 @@ export default class ItemPage extends Component
 
                 <View style={{height:screenSize.height * 0.05}}/>
 
-            </View>
+            </ScrollView>
         );
     }
 }
@@ -148,6 +148,12 @@ const styles = StyleSheet.create({
     shareIcon: {
         height: PixelRatio.getPixelSizeForLayoutSize(7),
         width: PixelRatio.getPixelSizeForLayoutSize(7)
+    },
+    backArrowButton:{
+        alignItems:'center',
+        justifyContent:'center',
+        height: PixelRatio.getPixelSizeForLayoutSize(10),
+        width: PixelRatio.getPixelSizeForLayoutSize(10),
     },
     backArrow: {
         height: PixelRatio.getPixelSizeForLayoutSize(5),
