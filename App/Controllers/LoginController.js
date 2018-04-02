@@ -1,8 +1,7 @@
 import {Platform} from 'react-native'
-
 let packageJSON = require('../../package.json');
-
 const serverAddress = packageJSON.proxy;
+
 exports.getUser = function (data)
 {
     return fetch(serverAddress + 'getUser/' + data.credentials.userId).then(response =>

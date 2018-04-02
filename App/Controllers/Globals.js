@@ -1,3 +1,5 @@
+
+
 global.categories = [   {namet:"מכנסיים ואוברולים", id:'0'},
                         {namet:"בגדי ים", id:'1'},
                         {namet:"חולצות", id:'2'},
