@@ -1,4 +1,4 @@
-let earthRadius = 6371;
+let earthRadius = 6371*1000;
 
 exports.distance = (from, to) =>
 {

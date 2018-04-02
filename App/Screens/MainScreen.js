@@ -15,17 +15,16 @@ import SelectMeasure from "./SelectMeasure";
 
 const mainView = TabNavigator(
     {
-        SelectMeasure: {screen: SelectMeasure},
-        Filter: {screen: Filter},
+        //Filter: {screen: Filter},
         Categories: {screen: Categories},
         AddItem: {screen: AddItem},
+        //SelectMeasure: {screen: SelectMeasure},
         ItemsGallery: {screen: ItemsGallery},
-        Chats: {screen: Chats},
-        Favorites: {screen: Favorites},
+        //Chats: {screen: Chats},
+        //Favorites: {screen: Favorites},
         Profile: {screen: Profile}
     },
     {
-        tabBarComponent: NavigationComponent,
         tabBarPosition: 'bottom',
         tabBarOptions: {
             bottomNavigationOptions: {

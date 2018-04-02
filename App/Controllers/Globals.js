@@ -11,5 +11,5 @@ global.categories = [   {namet:"מכנסיים ואוברולים", id:'0'},
                         {namet:"הכל", id:'10'},];
 
 global.currentCategoryID = global.categories.length - 1;
-
+global.categoryChanged = false;
 global.currentLocation = {};

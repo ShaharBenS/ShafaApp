@@ -6,10 +6,9 @@ import {
     View,
     TouchableHighlight,
     Alert,
-    FlatList,
-    Picker,
     ScrollView,
-    Dimensions
+    Dimensions,
+    PixelRatio
 } from 'react-native';
 
 let ASOSParser = require('../Controllers/URLParser/AsosParser');
@@ -27,6 +26,7 @@ let initialState;
 
 export default class AddItem extends Component<props>
 {
+
     constructor(props)
     {
         super(props);
@@ -72,7 +72,6 @@ export default class AddItem extends Component<props>
             }
         }, 1000);
 
-        const {navigate} = this.props.navigation;
 
         categoriesLabelsAndValues = global.categories.map(cat =>
         {
@@ -91,12 +90,14 @@ export default class AddItem extends Component<props>
     render()
     {
         let _this = this;
+        const {navigate} = this.props.navigation;
+
         return (
             <View>
                 <View style={styles.headerContainer}>
                     <TouchableHighlight onPress={() =>
                     {
-                        Alert.alert("LOL")
+                        Alert.alert("LOL","Ya EFES")
                     }} style={styles.backArrow} underlayColor='grey'>
                         <Image source={backButton}/>
                     </TouchableHighlight>
@@ -109,18 +110,16 @@ export default class AddItem extends Component<props>
                                      labelsAndValues={[{label: 'אסוס', value: 'ASOS'}]}
                                      valueChangedCallback={(itemValue) =>
                                      {
-                                         _this.state.company = itemValue;
                                          _this.setState(initialState);
-                                         _this.textChanged = true;
+                                         _this.setState({company: itemValue,textChanged:true})
                                      }}/>
                         <TextField
                             maxLength={250}
                                 fieldName={'לינק / קוד פריט'}
                                    textChangedCallback={text =>
                                    {
-                                       _this.state.linkOrID = text;
                                        _this.setState(initialState);
-                                       _this.state.textChanged = true;
+                                       _this.setState({linkOrID: text,textChanged: true});
                                    }}/>
                         <Text style={styles.productStatus}>{this.state.productStatus}</Text>
 
@@ -132,12 +131,12 @@ export default class AddItem extends Component<props>
                                     labelsAndValues={this.state.product.sizes}
                                     valueChangedCallback={itemValue =>
                                     {
-                                        this.state.selectedSize = itemValue
+                                        this.setState({selectedSize:itemValue})
                                     }}/>,
                                 <PickerField fieldName={'קטגוריה'} labelsAndValues={categoriesLabelsAndValues}
                                              valueChangedCallback={itemValue =>
                                              {
-                                                 this.state.categoryID = itemValue
+                                                 this.setState({categoryID:itemValue})
                                              }}/>,
                                 <TextField maxLength={10}
                                         keyboardType={'numeric'} fieldName={'מחיר'}
@@ -145,7 +144,7 @@ export default class AddItem extends Component<props>
                                 {
                                     if (!isNaN(text))
                                     {
-                                        _this.state.price = text;
+                                        _this.setState({price: text})
                                     }
                                 }}/>
                                 ,
@@ -153,16 +152,16 @@ export default class AddItem extends Component<props>
                                               initialText={'ספרי על המוצר (אופציונלני).\nלמה קנית? למה מכרת? איך לדעתך הפריט?'}
                                               textChangedCallback={(text) =>
                                               {
-                                                  this.state.description = text
+                                                  this.setState({description : text})
                                               }}
-                                              width={viewWidth * screenSize.width}
-                                              height={screenSize.height*0.12}
+                                              width={PixelRatio.getPixelSizeForLayoutSize(88.3)}
+                                              height={PixelRatio.getPixelSizeForLayoutSize(29)}
                                               numberOfLines={5}
                                                 maxLength={50}/>,
                                 <LocationField fieldName={'מיקום פריט'}
-                                               suggestionsWidth={viewWidth*screenSize.width}
+                                               suggestionsWidth={PixelRatio.getPixelSizeForLayoutSize(88.3)}
                                                locationFoundCallback={(loc)=>{
-                                                   this.state.location = loc;
+                                                   this.setState({location:loc});
                                                }} />,
                                 <TouchableHighlight onPress={() =>
                                 {
@@ -187,7 +186,7 @@ export default class AddItem extends Component<props>
                                             categoryID: this.state.categoryID,
                                             size: this.state.selectedSize,
                                             owner: global.user._id,
-                                            location: [this.state.location.lat, this.state.location.lng],
+                                            location: [this.state.location.lng, this.state.location.lat],
                                             price: this.state.price,
                                             manufacturer: product.manufacturer,
                                             images: product.images,
@@ -202,7 +201,7 @@ export default class AddItem extends Component<props>
                                             navigate('Profile')
                                         }).catch((err) =>
                                         {
-                                            Alert.alert('שגיאה!', err)
+                                            Alert.alert('שגיאה!', JSON.stringify(err))
                                         })
                                     }
                                 }}
@@ -224,45 +223,44 @@ export default class AddItem extends Component<props>
 
 let styles = StyleSheet.create({
     headerContainer: {
-        paddingTop: 10,
+        paddingTop: PixelRatio.getPixelSizeForLayoutSize(4),
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
     },
     propertiesView: {
-        //marginTop: screenSize.height * 0.06,
-        width: screenSize.width * viewWidth,
-        marginLeft: screenSize.width * (1 - viewWidth) / 2
+        width: PixelRatio.getPixelSizeForLayoutSize(88.3),
+        marginLeft: PixelRatio.getPixelSizeForLayoutSize(18.3),
     }
     ,
     textStyle: {
-        fontSize: 25,
+        fontSize: PixelRatio.getPixelSizeForLayoutSize(5.3),
         fontFamily: 'OpenSansHebrew-Regular',
         color: '#4a4a4a'
     },
     productStatus: {
-        fontSize: 18,
+        fontSize: PixelRatio.getPixelSizeForLayoutSize(4.5),
         fontFamily: 'OpenSansHebrew-Regular',
         color: '#4a4a4a'
     },
     backArrow: {
-        paddingTop: 10,
         position: 'absolute',
-        right: 0,
-        marginRight: 15,
+        paddingTop:PixelRatio.getPixelSizeForLayoutSize(3),
+        right:0,
+        marginRight:PixelRatio.getPixelSizeForLayoutSize(4)
     },
     postButton: {
-        marginTop: screenSize.height * 0.089968,
-        height: screenSize.height * 0.0643274,
-        width: screenSize.width * 0.7064,
-        marginLeft: 0.0468 / 2 * screenSize.height,
+        marginTop: PixelRatio.getPixelSizeForLayoutSize(19),
+        height: PixelRatio.getPixelSizeForLayoutSize(14.3),
+        width: PixelRatio.getPixelSizeForLayoutSize(88.3),
+        //marginLeft: PixelRatio.getPixelSizeForLayoutSize(18.3),
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#be7ce0'
     },
     postText: {
         fontFamily: 'OpenSansHebrew-Regular',
-        fontSize: 15,
+        fontSize: PixelRatio.getPixelSizeForLayoutSize(6),
         color: '#fff'
     }
 });

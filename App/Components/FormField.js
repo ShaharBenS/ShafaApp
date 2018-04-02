@@ -8,7 +8,7 @@ import {
     StyleSheet,
     TextInput,
     FlatList,
-    Image
+    Image, PixelRatio
 } from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete'
 
@@ -149,7 +149,7 @@ export class LocationField extends Component
                 }
             }}
 
-            currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
+            //currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
             currentLocationLabel="מיקום נוכחי"
             nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
 
@@ -163,7 +163,7 @@ export class LocationField extends Component
 
 let styles = StyleSheet.create({
     textStyle: {
-        fontSize: 17,
+        fontSize: PixelRatio.getPixelSizeForLayoutSize(5.3),
         fontFamily: 'OpenSansHebrew-Light',
         color: '#747474',
         paddingBottom: 5,
@@ -183,7 +183,7 @@ let styles = StyleSheet.create({
         width: screenSize.width * 0.3,
     },
     bigText: {
-        paddingRight: 10,
+        paddingRight: PixelRatio.getPixelSizeForLayoutSize(5),
         borderStyle: 'solid',
         borderWidth: 1,
         borderColor: 'black',

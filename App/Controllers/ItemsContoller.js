@@ -15,20 +15,16 @@ exports.addItem = item =>
             body: JSON.stringify(item)
         }).then(res => res.json().then((data) =>
     {
-        if (data.output === 'SUCCESS')
-        {
-            return new Promise((res, rej) =>
+        return new Promise((res,rej)=>{
+            if (data.output === 'SUCCESS')
             {
-                res()
-            })
-        }
-        else
-        {
-            return new Promise((res, rej) =>
+                res();
+            }
+            else
             {
                 rej('ההוספה נכשלה')
-            })
-        }
+            }
+        });
     }));
 };
 

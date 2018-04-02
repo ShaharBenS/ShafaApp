@@ -10,7 +10,8 @@ import {
     View,
     FlatList,
     Image,
-    Dimensions, PixelRatio,
+    Dimensions,
+    PixelRatio,
 
 } from 'react-native';
 import {CategoryItem} from '../Components/CategoryItem';
@@ -48,10 +49,11 @@ export default class Categories extends Component<Props>
 
 
         navigateToItems = (category)=>
-    {
-        global.currentCategoryID = category.id;
-        navigate('ItemsGallery')
-    };
+        {
+            global.categoryChanged = true;
+            global.currentCategoryID = category.id;
+            navigate('ItemsGallery')
+        };
     }
 
     static navigationOptions = {
