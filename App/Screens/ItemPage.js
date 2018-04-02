@@ -8,10 +8,10 @@ import {
     Alert,
     Dimensions,
     PixelRatio,
-    ScrollView
+    ScrollView,
 } from 'react-native';
 import {Pages} from 'react-native-pages'
-
+import {NavigationActions} from 'react-navigation'
 
 let screenSize = Dimensions.get('window');
 let shareIcon = require('../icons/pngs/share_icon.png');
@@ -42,7 +42,9 @@ export default class ItemPage extends Component
                     <View style={styles.itemNameView}>
                         <Text style={styles.textRegular}>{this.state.item.name}</Text>
                     </View>
-                    <TouchableHighlight underlayColor={'#fff'} style = {styles.backArrowButton} onPress={()=>{navigate('ItemsPage')}} >
+                    <TouchableHighlight underlayColor={'#fff'} style = {styles.backArrowButton} onPress={()=>{
+                        this.props.navigation.dispatch(NavigationActions.back())
+                    }}>
                         <Image style={styles.backArrow} resizeMode={'stretch'} source={backArrow}/>
                     </TouchableHighlight>
                 </View>
@@ -105,7 +107,8 @@ export default class ItemPage extends Component
                         <View style={{flexDirection:'row',
                             alignItems:'center',
                             justifyContent:'space-evenly',width:screenSize.width*0.4}}>
-                            <Text style = {styles.textLight}>שחר בן שטרית</Text>
+                            <Text style = {styles.textLight}>{this.state.item.owner.name.firstName+' '+
+                            this.state.item.owner.name.lastName}</Text>
                             <Image style={styles.profilePic} source = {{uri:'http://graph.facebook.com/'+
                                 this.state.item.owner.userFacebookID+'/picture?type=square'}}/>
                         </View>

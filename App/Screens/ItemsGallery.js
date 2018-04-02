@@ -20,7 +20,7 @@ import {
 import PopupDialog from 'react-native-popup-dialog';
 import {GalleyItem} from '../Components/GalleyItem';
 import {SelectorItem} from '../Components/SelectorItem';
-import {StackNavigator, SwitchNavigator} from 'react-navigation';
+import {StackNavigator} from 'react-navigation';
 import Filter from "./Filter";
 import ItemPage from "./ItemPage";
 
@@ -199,9 +199,14 @@ class ItemsPage extends Component<Props>
 }
 
 
-let ItemsGallery = SwitchNavigator({
+let ItemsGallery = StackNavigator({
     ItemsPage: {screen: ItemsPage},
     ItemPage: {screen: ItemPage},
+},{
+    headerMode:'none',
+    navigationOptions:{
+        headerVisible: false,
+    }
 });
 
 export default ItemsGallery;
