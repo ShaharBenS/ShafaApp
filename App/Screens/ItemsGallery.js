@@ -23,10 +23,26 @@ import {SelectorItem} from '../Components/SelectorItem';
 
 let itemsController = require('../Controllers/ItemsContoller');
 let maxChunksParallel = 50;
-let itemsPerChunk = 50;
+let itemsPerChunk = 8;
 
 let textArray = ["הכי קרוב אלי", "מהזול ליקר", "מהיקר לזול", "החדש ביותר"];
-
+let currentChunk = 0;
+let selectedIndexToName = (index) =>
+{
+    switch (index)
+    {
+        case 0:
+            return 'closest';
+        case 1:
+            return 'cheapest';
+        case 2:
+            return 'expansive';
+        case 3:
+            return 'newest';
+        default:
+            return 'random';
+    }
+};
 export default class ItemsGallery extends Component<Props>
 {
 
@@ -40,40 +56,27 @@ export default class ItemsGallery extends Component<Props>
         super(props);
         const {navigate} = this.props.navigation;
 
-
         this.state = {
             selectedIndex: 2,
             disableArray: [true, false, true, true],
             items: []
         };
 
-        this.changeSort(-1,0);
+        this.changeSort(-1);
 
     }
 
-    changeSort(index,chunkNumber)
+
+    changeSort(index)
     {
-        let location = undefined;
-        let sortStrategy = null;
-        switch(index){
-            case 0:
-                sortStrategy = 'closest';
-                location = [global.currentLocation.lng,global.currentLocation.lat];
-                break;
-            case 1:
-                sortStrategy = 'cheapest';
-                break;
-            case 2:
-                sortStrategy = 'expansive';
-                break;
-            case 3:
-                sortStrategy = 'newest';
-                break;
-            default:
-                sortStrategy = 'random';
-                break;
-        }
-        itemsController.getItems(global.currentCategoryID, sortStrategy, chunkNumber, itemsPerChunk,
+        currentChunk = 0;
+        let preference = selectedIndexToName(index);
+        let location = preference === 'closest' ?
+            [global.currentLocation.lng, global.currentLocation.lat] : undefined;
+
+
+        itemsController.getItems(global.currentCategoryID, preference,
+            0, itemsPerChunk,
             location)
             .then(items =>
             {
@@ -99,11 +102,10 @@ export default class ItemsGallery extends Component<Props>
                                                   for (let j = 0; j < textArray.length; j++)
                                                       disables[j] = j !== i;
                                                   this.setState({selectedIndex: i, disableArray: disables});
-                                                  this.changeSort(i,0);
+                                                  this.changeSort(i);
                                               }
                                               }/>)
         }
-
 
 
         return (
@@ -119,9 +121,10 @@ export default class ItemsGallery extends Component<Props>
                         <Text style={styles.simpleText}>סינון</Text>
                     </TouchableOpacity>
 
-                    <View style={styles.upperBar} />
+                    <View style={styles.upperBar}/>
 
-                    <TouchableOpacity style={styles.simpleView} onPress={() => {
+                    <TouchableOpacity style={styles.simpleView} onPress={() =>
+                    {
                         this.popupDialog.show();
                     }}>
                         <Text style={styles.simpleText}>מיון</Text>
@@ -131,7 +134,8 @@ export default class ItemsGallery extends Component<Props>
 
                 </View>
                 <PopupDialog dialogStyle={styles.dialogCustom}
-                             width={0.8} height={dialogHeight} ref={(popupDialog) => {
+                             width={0.8} height={dialogHeight} ref={(popupDialog) =>
+                {
                     this.popupDialog = popupDialog;
                 }}>
                     <View style={{flex: 1}}>
@@ -143,6 +147,23 @@ export default class ItemsGallery extends Component<Props>
                 <View style={styles.lineDelimiter}/>
 
                 <FlatList
+                    onEndReached={() =>
+                    {
+                        currentChunk++;
+                        let preference = selectedIndexToName(this.state.selectedIndex);
+                        itemsController.getItems(global.currentCategoryID, preference,
+                            currentChunk * itemsPerChunk, itemsPerChunk, preference === 'closest' ?
+                                [global.currentLocation.lng, global.currentLocation.lat]
+                                : undefined).then(items =>{
+                            this.setState(previousState =>
+                            {
+                                return {items: [...previousState.items, ...items]}
+                            })}).catch(err =>
+                            {
+                                Alert.alert("שגיאה", JSON.stringify(err))
+                            });
+                    }}
+                    onEndReachedThreshold={0.9}
                     numColumns={2}
                     data={this.state.items}
                     renderItem={(item) =>

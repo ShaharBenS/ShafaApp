@@ -22,7 +22,8 @@ export class GalleyItem extends Component<props>
     {
         props.item.distance = '';
         super(props);
-        this.state = {like: global.user.likedItems.indexOf(props.item.owner) > -1};
+        //TODO: make sure the global.user.likedItems is always sorted
+        this.state = {like: global.user.likedItems.indexOf(props.item.owner._id) > -1};
 
         unlike = require('../icons/pngs/like_icon.png');
         like = require('../icons/pngs/like_icon_selected.png');
@@ -31,7 +32,7 @@ export class GalleyItem extends Component<props>
     render()
     {
         imgURI = 'http://' + this.props.item.images[0];
-        profileURI = 'http://graph.facebook.com/' + this.props.item.userFacebookID + '/picture?type=square';
+        profileURI = 'http://graph.facebook.com/' + this.props.item.owner.userFacebookID + '/picture?type=square';
         let brandNameShort = JSON.parse(JSON.stringify(this.props.item.manufacturer)).split(' ')[0];
 
         this.props.item.distance = (distanceController.distance(

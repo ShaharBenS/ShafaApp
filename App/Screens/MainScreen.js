@@ -20,8 +20,8 @@ const mainView = TabNavigator(
         AddItem: {screen: AddItem},
         SelectMeasure: {screen: SelectMeasure},
         ItemsGallery: {screen: ItemsGallery},
-        Chats: {screen: Chats},
-        Favorites: {screen: Favorites},
+        //Chats: {screen: Chats},
+        //Favorites: {screen: Favorites},
         Profile: {screen: Profile}
     },
     {

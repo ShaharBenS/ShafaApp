@@ -7,7 +7,6 @@
 import React, { Component } from 'react';
 import {
     AppRegistry,
-    Text,Alert
 } from 'react-native';
 import { SwitchNavigator } from "react-navigation";
 require('./App/Controllers/Globals');

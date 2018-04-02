@@ -12,7 +12,8 @@ import {
     Alert,
     Image,
     Dimensions,
-    ImageBackground
+    ImageBackground,
+    PixelRatio
 } from 'react-native';
 
 import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
@@ -30,38 +31,38 @@ let facebookLogoSize = {height: 0.0508322, width: 0.048};
 
 const styles = StyleSheet.create({
     loginButtonImage: {
-        height: buttonSize.height * screenSize.height,
-        width: buttonSize.width * screenSize.width,
+        height: PixelRatio.getPixelSizeForLayoutSize(22),
+        width: PixelRatio.getPixelSizeForLayoutSize(95),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-evenly'
     },
     backgroundImage: {
-        marginTop: screenSize.height * (1 - backgroundPosition),
-        height: screenSize.height * backgroundPosition,
-        width: screenSize.width,
+        marginTop: PixelRatio.getPixelSizeForLayoutSize(99.7),
+        height: PixelRatio.getPixelSizeForLayoutSize(122.7),
+        width: PixelRatio.getPixelSizeForLayoutSize(125),
         resizeMode: 'stretch'
     },
     loginButton: {
         position: 'absolute',
-        marginTop: screenSize.height * buttonPosition.top,
-        marginLeft: screenSize.width * buttonPosition.left
+        marginTop: PixelRatio.getPixelSizeForLayoutSize(91.3),
+        marginLeft: PixelRatio.getPixelSizeForLayoutSize(15)
     },
     shafaLogo: {
         position: 'absolute',
-        height: screenSize.height * logoSize.height,
-        width: screenSize.width * logoSize.width,
-        marginTop: screenSize.height * logoPosition.top,
-        marginLeft: screenSize.width * logoPosition.left,
+        height: PixelRatio.getPixelSizeForLayoutSize(61.7),
+        width: PixelRatio.getPixelSizeForLayoutSize(46.7),
+        marginTop: PixelRatio.getPixelSizeForLayoutSize(22.3),
+        marginLeft: PixelRatio.getPixelSizeForLayoutSize(40),
     },
     textStyle: {
         color: "#ffffff",
-        fontSize: 19,
+        fontSize: PixelRatio.getPixelSizeForLayoutSize(6.7),
         fontFamily: 'OpenSansHebrew-Regular'
     },
     facebookLogo: {
-        height: screenSize.height * facebookLogoSize.height,
-        width: screenSize.width * facebookLogoSize.width,
+        height: PixelRatio.getPixelSizeForLayoutSize(11.3),
+        width: PixelRatio.getPixelSizeForLayoutSize(6),
         resizeMode: 'stretch'
     }
 });
@@ -96,7 +97,7 @@ export default class FacebookLogin extends Component<Props>
         return (
             <View>
                 <Image source={background} style={styles.backgroundImage}/>
-                <Image source={shafaLogo} style={styles.shafaLogo}/>
+                <Image source={shafaLogo} resizeMode={'contain'} style={styles.shafaLogo}/>
                 <View style={styles.loginButton}>
                     <FBLogin
                         onClickColor={onClickColor}
@@ -149,15 +150,15 @@ export default class FacebookLogin extends Component<Props>
                         }}
                         onError={function (data)
                         {
-                            Alert.alert("ERROR", JSON.stringify(data));
+                            Alert.alert("שגיאה", JSON.stringify(data));
                         }}
                         onCancel={function ()
                         {
-                            Alert.alert("User cancelled.");
+                            Alert.alert("בוטל.");
                         }}
                         onPermissionsMissing={function (data)
                         {
-                            Alert.alert("Check permissions!", JSON.stringify(data));
+                            Alert.alert("אין לך רשות", JSON.stringify(data));
                         }}
                     />
                 </View>

@@ -50,6 +50,7 @@ export default class Categories extends Component<Props>
 
         navigateToItems = (category)=>
         {
+            global.categoryChanged = true;
             global.currentCategoryID = category.id;
             navigate('ItemsGallery')
         };
