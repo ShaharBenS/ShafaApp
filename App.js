@@ -34,8 +34,8 @@ setInterval(()=>{
 
 let App = SwitchNavigator({
     mainScreen: {screen: MainScreen},
+        loginScreen: {screen: FacebookLogin},
 
-    loginScreen: {screen: FacebookLogin},
     },
 );
 
