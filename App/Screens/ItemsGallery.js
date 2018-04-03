@@ -24,14 +24,12 @@ import {StackNavigator} from 'react-navigation';
 import Filter from "./Filter";
 import ItemPage from "./ItemPage";
 
-
+const distanceController = require('../Controllers/DistanceController');
 const itemsController = require('../Controllers/ItemsContoller');
 const maxChunksParallel = 50;
 const itemsPerChunk = 8;
 const dialogHeight = PixelRatio.getPixelSizeForLayoutSize(100);
 const textArray = ["ללא מיון", "הכי קרוב אלי", "מהזול ליקר", "מהיקר לזול", "החדש ביותר"];
-
-let currentChunk = 0;
 let selectedIndexToName = (index) =>
 {
     switch (index)
@@ -54,7 +52,7 @@ let selectedIndexToName = (index) =>
 
 class ItemsPage extends Component<Props>
 {
-
+    currentChunk;
     static navigationOptions = {
         labelStyle: {display: 'none'},
         tabBarIcon: () => <Image source={require('../icons/pngs/categories_icon_gry.png')} style={styles.icon}/>
@@ -68,21 +66,22 @@ class ItemsPage extends Component<Props>
         this.state = {
             selectedIndex: 0,
             disableArray: [false, true, true, true, true],
-            items: []
+            items: [],
+            sizeFilter: [],
+            distanceFilter: Infinity,
+            priceFilter: Infinity,
         };
 
         this.changeSort(0);
 
     }
 
-
     changeSort(index)
     {
-        currentChunk = 0;
+        this.currentChunk = 0;
         let preference = selectedIndexToName(index);
         let location = preference === 'closest' ?
             [global.currentLocation.lng, global.currentLocation.lat] : undefined;
-
 
 
         itemsController.getItems(global.currentCategoryID, preference,
@@ -90,6 +89,8 @@ class ItemsPage extends Component<Props>
             location)
             .then(items =>
             {
+
+                this.setFilter(items);
                 this.setState({items: items});
             })
             .catch(err =>
@@ -164,13 +165,14 @@ class ItemsPage extends Component<Props>
                     onEndReached={() =>
                     {
                         //TODO: increase significantly the amount of items being fetched at the beginning. And add a 'next page' button when end reached
-                        currentChunk++;
+                        this.currentChunk++;
                         let preference = selectedIndexToName(this.state.selectedIndex);
                         itemsController.getItems(global.currentCategoryID, preference,
-                            currentChunk * itemsPerChunk, itemsPerChunk, preference === 'closest' ?
+                            this.currentChunk * itemsPerChunk, itemsPerChunk, preference === 'closest' ?
                                 [global.currentLocation.lng, global.currentLocation.lat]
                                 : undefined).then(items =>
                         {
+                            this.setFilter(items);
                             this.setState(previousState =>
                             {
                                 return {items: [...previousState.items, ...items]}
@@ -185,14 +187,16 @@ class ItemsPage extends Component<Props>
                     data={this.state.items}
                     renderItem={(item) =>
                     {
-                        return <GalleyItem onPressCallback={(_item) =>
+                        return <GalleyItem onPressCallback={(_item,_this) =>
                         {
+                            global.currentItemClass = _this;
                             global.currentItem = _item;
                             navigate('ItemPage')
-                        }} initialLikeState = {global.user.likedItems.indexOf(item.item._id) > -1}
-                                           item = {item.item}/>
+                        }} initialLikeState={global.user.likedItems.indexOf(item.item._id) > -1}
+                                           item={item.item}/>
                     }}
-                    keyExtractor={(item, index) => {
+                    keyExtractor={(item) =>
+                    {
                         return item._id;
                     }}
                 />
@@ -203,6 +207,20 @@ class ItemsPage extends Component<Props>
     }
 
 
+    setFilter(items)
+    {
+        return items.filter((item) =>
+        {
+            item.distance = distanceController.distance(
+                global.currentLocation,
+                {lng: item.location.coordinates[0], lat: item.location.coordinates[1]});
+
+            return  item.price < this.state.priceFilter &&
+                    item.distance === '' ? true : item.distance < this.state.priceFilter &&
+                    this.state.sizeFilter.includes(item.size)
+
+        });
+    }
 }
 
 

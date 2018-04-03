@@ -19,6 +19,10 @@ exports.distance = (from, to) =>
 
 
 exports.metersToLabel = (distance)=>{
+    if(distance === '')
+    {
+        return ''
+    }
     if(distance < 1000){
         return {value:distance.toFixed(0),measurement:'m'};
     }
