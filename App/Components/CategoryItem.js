@@ -4,13 +4,10 @@ import {
     Image,
     Text,
     TouchableOpacity,
-    Dimensions
+    Dimensions,
+    PixelRatio,
 } from 'react-native';
 
-const percent = 0.5;
-const window = Dimensions.get('window');
-const renderedHeight = percent*window.height;
-const radius = 3;
 
 export class CategoryItem extends Component<props> {
     render() {
@@ -28,22 +25,19 @@ export class CategoryItem extends Component<props> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 3,
-        marginRight: 5,
-        marginLeft: 5,
-        marginBottom: 0,
-        height:renderedHeight,
+        margin: PixelRatio.getPixelSizeForLayoutSize(3),
+        height:PixelRatio.getPixelSizeForLayoutSize(100),
     },
     image: {
         width:'100%',
-        height: '80%',
+        height: '90%',
         resizeMode:'cover',
-        borderRadius: radius,
+        borderRadius: PixelRatio.getPixelSizeForLayoutSize(1),
     },
     title: {
-        fontSize: 30,
+        fontSize: PixelRatio.getPixelSizeForLayoutSize(6.7),
         textAlign: 'right',
-        padding: 10,
+        paddingTop: PixelRatio.getPixelSizeForLayoutSize(3),
         fontFamily: 'OpenSansHebrew-Regular',
         color: '#4a4a4a',
 

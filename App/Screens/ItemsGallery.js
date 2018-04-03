@@ -32,10 +32,8 @@ const dialogHeight = PixelRatio.getPixelSizeForLayoutSize(75);
 const textArray = ["הכי קרוב אלי", "מהזול ליקר", "מהיקר לזול", "החדש ביותר"];
 
 let currentChunk = 0;
-let selectedIndexToName = (index) =>
-{
-    switch (index)
-    {
+let selectedIndexToName = (index) => {
+    switch (index) {
         case 0:
             return 'closest';
         case 1:
@@ -50,16 +48,14 @@ let selectedIndexToName = (index) =>
 };
 
 
-class ItemsPage extends Component<Props>
-{
+class ItemsPage extends Component<Props> {
 
     static navigationOptions = {
         labelStyle: {display: 'none'},
         tabBarIcon: () => <Image source={require('../icons/pngs/categories_icon_gry.png')} style={styles.icon}/>
     };
 
-    constructor(props)
-    {
+    constructor(props) {
         super(props);
         const {navigate} = this.props.navigation;
 
@@ -74,8 +70,7 @@ class ItemsPage extends Component<Props>
     }
 
 
-    changeSort(index)
-    {
+    changeSort(index) {
         currentChunk = 0;
         let preference = selectedIndexToName(index);
         let location = preference === 'closest' ?
@@ -85,27 +80,22 @@ class ItemsPage extends Component<Props>
         itemsController.getItems(global.currentCategoryID, preference,
             0, itemsPerChunk,
             location)
-            .then(items =>
-            {
+            .then(items => {
                 this.setState({items: items});
             })
-            .catch(err =>
-            {
+            .catch(err => {
                 Alert.alert('שגיאה', JSON.stringify(err))
             });
     }
 
-    render()
-    {
+    render() {
         let {navigate} = this.props.navigation;
 
         let selectorsArray = [];
 
-        for (let i = 0; i < textArray.length; i++)
-        {
+        for (let i = 0; i < textArray.length; i++) {
             selectorsArray.push(<SelectorItem textToDisplay={textArray[i]} disableDot={this.state.disableArray[i]}
-                                              onPress={() =>
-                                              {
+                                              onPress={() => {
                                                   let disables = this.state.disableArray;
                                                   for (let j = 0; j < textArray.length; j++)
                                                       disables[j] = j !== i;
@@ -120,13 +110,12 @@ class ItemsPage extends Component<Props>
 
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={styles.categoryName}>CATEGORY NAME</Text>
+                    <Text style={styles.categoryName}>{global.categories[global.currentCategoryID].namet}</Text>
                     <Image style={styles.backArrow} source={require('../icons/pngs/next_arrow.png')}/>
                 </View>
                 <View style={styles.lineDelimiter}/>
                 <View style={styles.options}>
-                    <TouchableOpacity style={styles.simpleView} onPress={() =>
-                    {
+                    <TouchableOpacity style={styles.simpleView} onPress={() => {
                         navigate('Filter')
                     }}>
                         <Text style={styles.simpleText}>סינון</Text>
@@ -134,8 +123,7 @@ class ItemsPage extends Component<Props>
 
                     <View style={styles.upperBar}/>
 
-                    <TouchableOpacity style={styles.simpleView} onPress={() =>
-                    {
+                    <TouchableOpacity style={styles.simpleView} onPress={() => {
                         this.popupDialog.show();
                     }}>
                         <Text style={styles.simpleText}>מיון</Text>
@@ -145,8 +133,7 @@ class ItemsPage extends Component<Props>
 
                 </View>
                 <PopupDialog dialogStyle={styles.dialogCustom}
-                             width={0.8} height={dialogHeight} ref={(popupDialog) =>
-                {
+                             width={0.8} height={dialogHeight} ref={(popupDialog) => {
                     this.popupDialog = popupDialog;
                 }}>
                     <View style={{flex: 1}}>
@@ -158,31 +145,25 @@ class ItemsPage extends Component<Props>
                 <View style={styles.lineDelimiter}/>
 
                 <FlatList
-                    onEndReached={() =>
-                    {
+                    onEndReached={() => {
                         currentChunk++;
                         let preference = selectedIndexToName(this.state.selectedIndex);
                         itemsController.getItems(global.currentCategoryID, preference,
                             currentChunk * itemsPerChunk, itemsPerChunk, preference === 'closest' ?
                                 [global.currentLocation.lng, global.currentLocation.lat]
-                                : undefined).then(items =>
-                        {
-                            this.setState(previousState =>
-                            {
+                                : undefined).then(items => {
+                            this.setState(previousState => {
                                 return {items: [...previousState.items, ...items]}
                             })
-                        }).catch(err =>
-                        {
+                        }).catch(err => {
                             Alert.alert("שגיאה", JSON.stringify(err))
                         });
                     }}
                     onEndReachedThreshold={0.9}
                     numColumns={2}
                     data={this.state.items}
-                    renderItem={(item) =>
-                    {
-                        return <GalleyItem onPressCallback={(_item) =>
-                        {
+                    renderItem={(item) => {
+                        return <GalleyItem onPressCallback={(_item) => {
                             global.currentItem = _item;
                             navigate('ItemPage')
                         }} item={item.item}/>
@@ -202,9 +183,10 @@ class ItemsPage extends Component<Props>
 let ItemsGallery = StackNavigator({
     ItemsPage: {screen: ItemsPage},
     ItemPage: {screen: ItemPage},
-},{
-    headerMode:'none',
-    navigationOptions:{
+    Filter: {screen: Filter},
+}, {
+    headerMode: 'none',
+    navigationOptions: {
         headerVisible: false,
     }
 });

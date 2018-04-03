@@ -28,12 +28,13 @@ export default class SelectMeasure extends Component<Props> {
             checkArray.push(false);
         }
         checkArray[3] = true; //DEFAULT LARGE CHECKED
+        this.updateGlobal(checkArray[3], 3);
         return checkArray;
     }
 
     constructor(props) {
         super(props);
-        this.state = {  checkArray: this.initCheckArray()};
+        this.state = {checkArray: this.initCheckArray()};
         this.textArray = [
             "XS", "S", "M", "L", "XL", "XXL",
             "34", "36", "38", "40", "42", "44",
@@ -44,9 +45,18 @@ export default class SelectMeasure extends Component<Props> {
 
     allWith(value) {
         let checks = this.state.checkArray;
-        for(let i = 0; i< this.textArray.length; i++)
-        checks[i] = value;
+        for (let i = 0; i < this.textArray.length; i++) {
+            checks[i] = value;
+            this.updateGlobal(value, i);
+        }
         this.setState({checkArray: checks});
+    }
+
+    updateGlobal(value, index){
+        if(value)
+            global.sizes.push(this.textArray[index]);
+        else
+            global.sizes.splice(global.sizes.indexOf(this.textArray[index]),1);
     }
 
     render() {
@@ -56,6 +66,7 @@ export default class SelectMeasure extends Component<Props> {
                                                onPress={() => {
                                                    let checks = this.state.checkArray;
                                                    checks[i] = !checks[i];
+                                                   this.updateGlobal(checks[i], i);
                                                    this.setState({checkArray: checks});
                                                }
                                                }/>)
@@ -69,13 +80,13 @@ export default class SelectMeasure extends Component<Props> {
                 </View>
                 <View style={styles.lineDelimiter}/>
                 <View style={styles.options}>
-                    <TouchableOpacity style={styles.simpleView} onPress={()=>this.allWith(false)}>
+                    <TouchableOpacity style={styles.simpleView} onPress={() => this.allWith(false)}>
                         <Text style={styles.simpleText}>נקה</Text>
                     </TouchableOpacity>
 
                     <View style={styles.upperBar}/>
 
-                    <TouchableOpacity style={styles.simpleView}  onPress={()=>this.allWith(true)}>
+                    <TouchableOpacity style={styles.simpleView} onPress={() => this.allWith(true)}>
                         <Text style={styles.simpleText}>בחר הכל</Text>
 
                     </TouchableOpacity>
@@ -95,7 +106,6 @@ export default class SelectMeasure extends Component<Props> {
             </View>
         );
     }
-
 
 
 }
