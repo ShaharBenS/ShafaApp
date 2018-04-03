@@ -15,93 +15,99 @@ import {
 let distanceController = require('../Controllers/DistanceController');
 let likesController = require('../Controllers/LikesController');
 
-let imgURI, profileURI, unlike, like;
-let brandNameShort;
+let  unlike, like;
 
 
 export class GalleyItem extends Component<props>
 {
-
+    imgURI;
+    profileURI;
+    brandNameShort;
     constructor(props)
     {
-        props.item.distance = '';
         super(props);
         //TODO: make sure the global.user.likedItems is always sorted
-        this.state = {like: props.initialLikeState};
+        props.item.likeState = props.initialLikeState;
+        this.state = {item:props.item};
+        this.state.item.distance = distanceController.metersToLabel(this.state.item.distance);
 
         unlike = require('../icons/pngs/like_icon.png');
         like = require('../icons/pngs/like_icon_selected.png');
+        this.imgURI = 'http://' + this.state.item.images[0];
+        this.profileURI = 'http://graph.facebook.com/' + this.state.item.owner.userFacebookID + '/picture?type=square';
+        this.brandNameShort = JSON.parse(JSON.stringify(this.state.item.manufacturer)).split(' ')[0];
     }
 
     render()
     {
-        imgURI = 'http://' + this.props.item.images[0];
-        profileURI = 'http://graph.facebook.com/' + this.props.item.owner.userFacebookID + '/picture?type=square';
-        let brandNameShort = JSON.parse(JSON.stringify(this.props.item.manufacturer)).split(' ')[0];
-
-        this.props.item.distance = (distanceController.distance(
-            global.currentLocation,
-            {lng: this.props.item.location.coordinates[0], lat: this.props.item.location.coordinates[1]}));
-        this.props.item.distance = distanceController.metersToLabel(this.props.item.distance);
 
         return (
             <View id={'container'} style={styles.container}>
                 <View id={'upper'}>
                     <TouchableNativeFeedback onPress={()=>{
-                        this.props.onPressCallback(this.props.item)
+                        this.props.onPressCallback(this.state.item,this)
                     }}>
-                        <Image id={'item'} source={{uri: imgURI}} style={styles.itemPic}/>
+                        <Image id={'item'} source={{uri: this.imgURI}} style={styles.itemPic}/>
                     </TouchableNativeFeedback>
                     <TouchableOpacity activeOpacity={0.5} style={styles.profilePicTouchable}>
-                        <Image id={'profile'} source={{uri: profileURI}} style={styles.profilePic}/>
+                        <Image id={'profile'} source={{uri: this.profileURI}} style={styles.profilePic}/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() =>
                     {
-                        if(this.state.like)
+                        if(this.state.item.likeState)
                         {
-                            likesController.unlikeItem(this.props.item._id).then(res=>{
-                                this.props.item.likes = res;
+                            likesController.unlikeItem(this.state.item._id).then(res=>{
+                                this.state.item.likes = res;
                                 //TODO: insert so it stay sorted, and check if this _id is already there
-                                let index = global.user.likedItems.indexOf(this.props.item_id);
+                                let index = global.user.likedItems.indexOf(this.state.item._id);
                                 if(index > -1){
                                     global.user.likedItems.splice(index,1)
                                 }
-                                this.setState((previousState)=>{return {like: !previousState.like}})
+                                this.setState((previousState)=>{
+                                    this.state.item.likeState = !previousState.item.likeState;
+                                    return {}
+                                })
                             }).catch(err=>{
                                 Alert.alert("שגיאה",JSON.stringify(err))
                             })
                         }
                         else{
-                            likesController.likeItem(this.props.item._id).then(res=>{
-                                this.props.item.likes = res;
+                            likesController.likeItem(this.state.item._id).then(res=>{
+                                this.state.item.likes = res;
                                 //TODO: insert so it stay sorted, and check if this _id is already there
-                                global.user.likedItems.push(this.props.item._id);
-                                this.setState((previousState)=>{return {like: !previousState.like}})
-                            }).catch(err=>{
+                                global.user.likedItems.push(this.state.item._id);
+                                this.setState((previousState)=>{
+                                    this.state.item.likeState = !previousState.item.likeState;
+                                    return {}
+                                })}).catch(err=>{
                                 Alert.alert("שגיאה",JSON.stringify(err))
                             });
                         }
                     }
                     } activeOpacity={0.5} style={styles.like}>
-                        <Image id={'like'} source={this.state.like ? like : unlike}/>
+                        <Image id={'like'} source={this.state.item.likeState ? like : unlike}/>
                     </TouchableOpacity>
                 </View>
                 <View id={'info'} style={styles.textualInfo}>
-                    <Text numberOfLines={2} id={'itemName'} style={styles.name}>{this.props.item.name}</Text>
+                    <Text numberOfLines={2} id={'itemName'} style={styles.name}>{this.state.item.name}</Text>
                     <View id={'infoSpec'} style={styles.infoSpec}>
                         <Text numberOfLines={1} style={styles.simpleFontSize}>
-                            <Text id={'company'}>{brandNameShort}</Text>
+                            <Text id={'company'}>{this.brandNameShort}</Text>
+                            {
+                                this.state.item.distance === '' ?
+                                    <Text> </Text> :
+                                    [<Text> • </Text>,
+                                        <Text id={'distance'}>
+                                            {this.state.item.distance.value}
+                                            {' '}
+                                            {this.state.item.distance.measurement}
+                                        </Text>]
+                            }
                             <Text> • </Text>
-                            <Text id={'distance'}>
-                                {this.props.item.distance.value}
-                                {' '}
-                                {this.props.item.distance.measurement}
-                            </Text>
-                            <Text> • </Text>
-                            <Text id={'size'}>{this.props.item.size}</Text>
+                            <Text id={'size'}>{this.state.item.size}</Text>
                         </Text>
                     </View>
-                    <Text id={'price'} style={styles.price}>{this.props.item.price + ' ש"ח'}</Text>
+                    <Text id={'price'} style={styles.price}>{this.state.item.price + ' ש"ח'}</Text>
                     <TouchableOpacity activeOpacity={0.5} style={styles.buyButton}>
                         <Text id={'buy'} style={styles.buyText}>לקנייה</Text>
                     </TouchableOpacity>

@@ -24,7 +24,7 @@ import {StackNavigator} from 'react-navigation';
 import Filter from "./Filter";
 import ItemPage from "./ItemPage";
 
-
+const distanceController = require('../Controllers/DistanceController');
 const itemsController = require('../Controllers/ItemsContoller');
 const maxChunksParallel = 50;
 const itemsPerChunk = 8;
@@ -54,7 +54,7 @@ let selectedIndexToName = (index) =>
 
 class ItemsPage extends Component<Props>
 {
-
+    currentChunk;
     static navigationOptions = {
         labelStyle: {display: 'none'},
         tabBarIcon: () => <Image source={require('../icons/pngs/categories_icon_gry.png')} style={styles.icon}/>
@@ -68,7 +68,10 @@ class ItemsPage extends Component<Props>
         this.state = {
             selectedIndex: 0,
             disableArray: [false, true, true, true, true],
-            items: []
+            items: [],
+            sizeFilter: [],
+            distanceFilter: Infinity,
+            priceFilter: Infinity,
         };
 
         this.changeSort(0);
@@ -78,7 +81,7 @@ class ItemsPage extends Component<Props>
 
     changeSort(index)
     {
-        currentChunk = 0;
+        this.currentChunk = 0;
         let preference = selectedIndexToName(index);
         let location = preference === 'closest' ?
             [global.currentLocation.lng, global.currentLocation.lat] : undefined;
@@ -90,6 +93,8 @@ class ItemsPage extends Component<Props>
             location)
             .then(items =>
             {
+
+                this.setFilter(items);
                 this.setState({items: items});
             })
             .catch(err =>
@@ -161,30 +166,38 @@ class ItemsPage extends Component<Props>
                     onEndReached={() =>
                     {
                         //TODO: increase significantly the amount of items being fetched at the beginning. And add a 'next page' button when end reached
-                        currentChunk++;
+                        this.currentChunk++;
                         let preference = selectedIndexToName(this.state.selectedIndex);
                         itemsController.getItems(global.currentCategoryID, preference,
-                            currentChunk * itemsPerChunk, itemsPerChunk, preference === 'closest' ?
+                            this.currentChunk * itemsPerChunk, itemsPerChunk, preference === 'closest' ?
                                 [global.currentLocation.lng, global.currentLocation.lat]
-                                : undefined).then(items => {
-                            this.setState(previousState => {
+                                : undefined).then(items =>
+                        {
+                            this.setFilter(items);
+                            this.setState(previousState =>
+                            {
                                 return {items: [...previousState.items, ...items]}
                             })
-                        }).catch(err => {
+                        }).catch(err =>
+                        {
                             Alert.alert("שגיאה", JSON.stringify(err))
                         });
                     }}
                     onEndReachedThreshold={0.9}
                     numColumns={2}
                     data={this.state.items}
-                    renderItem={(item) => {
-                        return <GalleyItem onPressCallback={(_item) => {
+                    renderItem={(item) =>
+                    {
+                        return <GalleyItem onPressCallback={(_item,_this) =>
+                        {
+                            global.currentItemClass = _this;
                             global.currentItem = _item;
                             navigate('ItemPage')
                         }} initialLikeState = {global.user.likedItems.indexOf(item.item._id) > -1}
                                            item = {item.item}/>
                     }}
-                    keyExtractor={(item, index) => {
+                    keyExtractor={(item) =>
+                    {
                         return item._id;
                     }}
                 />
@@ -201,7 +214,6 @@ class ItemsPage extends Component<Props>
 let ItemsGallery = StackNavigator({
     ItemsPage: {screen: ItemsPage},
     ItemPage: {screen: ItemPage},
-    Filter: {screen: Filter},
 }, {
     headerMode: 'none',
     navigationOptions: {
