@@ -15,3 +15,9 @@ global.categories = [   {namet:"מכנסיים ואוברולים", id:'0'},
 global.currentCategoryID = global.categories.length - 1;
 global.categoryChanged = false;
 global.currentLocation = {};
+
+
+global.isFiltered = false; // true when use filter, false otherwise
+global.upToDistance = 10;
+global.upToPrice = 50;
+global.sizes = [];

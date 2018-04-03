@@ -30,6 +30,8 @@ const maxChunksParallel = 50;
 const itemsPerChunk = 8;
 const dialogHeight = PixelRatio.getPixelSizeForLayoutSize(100);
 const textArray = ["ללא מיון", "הכי קרוב אלי", "מהזול ליקר", "מהיקר לזול", "החדש ביותר"];
+
+let currentChunk = 0;
 let selectedIndexToName = (index) =>
 {
     switch (index)
@@ -76,12 +78,14 @@ class ItemsPage extends Component<Props>
 
     }
 
+
     changeSort(index)
     {
         this.currentChunk = 0;
         let preference = selectedIndexToName(index);
         let location = preference === 'closest' ?
             [global.currentLocation.lng, global.currentLocation.lat] : undefined;
+
 
 
         itemsController.getItems(global.currentCategoryID, preference,
@@ -124,13 +128,12 @@ class ItemsPage extends Component<Props>
 
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={styles.categoryName}>CATEGORY NAME</Text>
+                    <Text style={styles.categoryName}>{global.categories[global.currentCategoryID].namet}</Text>
                     <Image style={styles.backArrow} source={require('../icons/pngs/next_arrow.png')}/>
                 </View>
                 <View style={styles.lineDelimiter}/>
                 <View style={styles.options}>
-                    <TouchableOpacity style={styles.simpleView} onPress={() =>
-                    {
+                    <TouchableOpacity style={styles.simpleView} onPress={() => {
                         navigate('Filter')
                     }}>
                         <Text style={styles.simpleText}>סינון</Text>
@@ -138,8 +141,7 @@ class ItemsPage extends Component<Props>
 
                     <View style={styles.upperBar}/>
 
-                    <TouchableOpacity style={styles.simpleView} onPress={() =>
-                    {
+                    <TouchableOpacity style={styles.simpleView} onPress={() => {
                         this.popupDialog.show();
                     }}>
                         <Text style={styles.simpleText}>מיון</Text>
@@ -149,8 +151,7 @@ class ItemsPage extends Component<Props>
 
                 </View>
                 <PopupDialog dialogStyle={styles.dialogCustom}
-                             width={0.8} height={dialogHeight} ref={(popupDialog) =>
-                {
+                             width={0.8} height={dialogHeight} ref={(popupDialog) => {
                     this.popupDialog = popupDialog;
                 }}>
                     <View style={{flex: 1}}>
@@ -192,8 +193,8 @@ class ItemsPage extends Component<Props>
                             global.currentItemClass = _this;
                             global.currentItem = _item;
                             navigate('ItemPage')
-                        }} initialLikeState={global.user.likedItems.indexOf(item.item._id) > -1}
-                                           item={item.item}/>
+                        }} initialLikeState = {global.user.likedItems.indexOf(item.item._id) > -1}
+                                           item = {item.item}/>
                     }}
                     keyExtractor={(item) =>
                     {
@@ -207,20 +208,6 @@ class ItemsPage extends Component<Props>
     }
 
 
-    setFilter(items)
-    {
-        return items.filter((item) =>
-        {
-            item.distance = distanceController.distance(
-                global.currentLocation,
-                {lng: item.location.coordinates[0], lat: item.location.coordinates[1]});
-
-            return  item.price < this.state.priceFilter &&
-                    item.distance === '' ? true : item.distance < this.state.priceFilter &&
-                    this.state.sizeFilter.includes(item.size)
-
-        });
-    }
 }
 
 

@@ -11,33 +11,52 @@ import {
 
 } from 'react-native';
 import Slider from 'react-native-slider';
+import {NavigationActions, StackNavigator} from "react-navigation";
+import SelectMeasure from "./SelectMeasure";
 
-let navigateToSizes;
 
-export default class Filter extends Component<Props> {
+class FilterOptions extends Component<Props> {
 
     static navigationOptions = {
         title: 'Filter',
         tabBarIcon: () => <Image source={require('../icons/pngs/categories_icon_gry.png')} style={styles.icon}/>
 
     };
+
     constructor(props) {
         super(props);
         this.state = {
             distance: initialDistance,
             price: initialPrice,
-            marginTextDistance: Filter.calcMargin(initialDistance),
-            marginTextPrice: Filter.calcMarginPrice(initialPrice)
+            marginTextDistance: FilterOptions.calcMargin(initialDistance),
+            marginTextPrice: FilterOptions.calcMarginPrice(initialPrice)
         };
-
-        const {navigate} = this.props.navigation;
-
-        navigateToSizes = ()=>
-        {
-            navigate('SelectMeasure')
-        };
+    }
 
 
+
+    static calcMargin(value) {
+        return window.width - 1.6 * sidedMargin - value * ((window.width - 2 * sidedMargin) / (maxDistance));
+
+    }
+
+
+    static calcMarginPrice(value) {
+        return sidedMargin + value * ((window.width - 2 * sidedMargin) / (maxPrice)) - (value * 0.065);
+    }
+
+    goBack(){ this.props.navigation.dispatch(NavigationActions.back()); }
+
+    search() {
+        global.upToDistance = this.state.distance;
+        global.upToPrice = this.state.price;
+        global.isFiltered = true;
+        goBack();
+    }
+
+    noFilter() {
+        global.isFiltered = false;
+        goBack();
     }
 
     render() {
@@ -46,12 +65,14 @@ export default class Filter extends Component<Props> {
             <View style={styles.container}>
                 {/*HEAD*/}
                 <View style={styles.header}>
-                    <Image style={styles.cancel} source={require('../icons/pngs/cancel_icon.png')}/>
                     <Text style={styles.title}>סינון</Text>
+                    <TouchableOpacity style={styles.cancelPosition} onPress={()=> this.goBack()}>
+                        <Image style={styles.cancel} source={require('../icons/pngs/cancel_icon.png')}/>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.lineDelimiter}/>
                 {/*SIZE*/}
-                <TouchableNativeFeedback onPress={()=>navigateToSizes()}>
+                <TouchableNativeFeedback onPress={() => this.props.navigation.navigate('SelectMeasure')}>
                     <View style={styles.header}>
                         <Image style={styles.arrow} source={require('../icons/pngs/next_arrow_left.png')}/>
                         <Text style={[styles.title, styles.alignRight]}>מידה</Text>
@@ -77,7 +98,7 @@ export default class Filter extends Component<Props> {
                         trackStyle={styles.progressTrack}
                         onValueChange={(distance) => this.setState({
                             distance: distance,
-                            marginTextDistance: Filter.calcMargin(distance)
+                            marginTextDistance: FilterOptions.calcMargin(distance)
                         })}/>
                     <View style={styles.header}>
                         <Text style={styles.quantityLeft}>{minDistance} ק"מ</Text>
@@ -103,7 +124,7 @@ export default class Filter extends Component<Props> {
                         trackStyle={styles.progressTrack}
                         onValueChange={(price) => this.setState({
                             price: price,
-                            marginTextPrice: Filter.calcMarginPrice(price)
+                            marginTextPrice: FilterOptions.calcMarginPrice(price)
                         })}/>
                     <View style={styles.header}>
                         <Text style={styles.quantityLeft}>{minPrice} ₪</Text>
@@ -114,24 +135,17 @@ export default class Filter extends Component<Props> {
                 <View style={[styles.lineDelimiter, styles.marginSides]}/>
 
                 {/*SEARCH BUTTON*/}
-                <TouchableOpacity style={styles.searchButton}>
+                <TouchableOpacity style={styles.searchButton} onPress={()=> this.search()}>
                     <Text style={styles.smallText}>חיפוש</Text>
                 </TouchableOpacity>
 
-
+                <TouchableOpacity style={styles.searchButton} onPress={()=> this.noFilter()}>
+                    <Text style={styles.smallText}>ללא סינון</Text>
+                </TouchableOpacity>
             </View>
         )
     }
-
-    static calcMargin(value) {
-        return window.width- 1.6*sidedMargin - value*((window.width- 2*sidedMargin)/(maxDistance));
-
-    }
-
-    static calcMarginPrice(value) {
-        return sidedMargin + value*((window.width- 2*sidedMargin)/(maxPrice)) - (value*0.065);
-    }
-};
+}
 
 const window = Dimensions.get('window');
 const barHeight = PixelRatio.getPixelSizeForLayoutSize(16.3);
@@ -146,6 +160,16 @@ const maxPrice = 500;
 const sidedMargin = PixelRatio.getPixelSizeForLayoutSize(8);
 const font = 'OpenSansHebrew-Regular';
 
+let Filter = StackNavigator({
+    FilterOptions: {screen: FilterOptions},
+    SelectMeasure: {screen: SelectMeasure}
+},{
+    headerMode: 'none',
+    navigationOptions: {
+        headerVisible: false,
+    }
+});
+export default Filter;
 
 
 const styles = StyleSheet.create({
@@ -154,8 +178,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
     },
     icon: {
-        width:PixelRatio.getPixelSizeForLayoutSize(6.5),
-        height:PixelRatio.getPixelSizeForLayoutSize(6.5),
+        width: PixelRatio.getPixelSizeForLayoutSize(6.5),
+        height: PixelRatio.getPixelSizeForLayoutSize(6.5),
         resizeMode: 'cover',
     },
     header: {
@@ -172,11 +196,13 @@ const styles = StyleSheet.create({
         margin: PixelRatio.getPixelSizeForLayoutSize(9.7)
     },
     cancel: {
-        position: 'absolute',
-        left: 0,
-        marginLeft: PixelRatio.getPixelSizeForLayoutSize(6),
         width: cancelImageSize,
         height: cancelImageSize,
+    },
+    cancelPosition: {
+        position: 'absolute',
+        right: 0,
+        marginRight: PixelRatio.getPixelSizeForLayoutSize(6),
     },
     arrow: {
         position: 'absolute',
@@ -233,15 +259,15 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         borderColor: '#000',
         borderWidth: 2,
-        marginTop: PixelRatio.getPixelSizeForLayoutSize(25)
+        width: '40%',
+        marginTop: PixelRatio.getPixelSizeForLayoutSize(10)
 
     },
     smallText: {
-        paddingRight: PixelRatio.getPixelSizeForLayoutSize(13),
-        paddingLeft: PixelRatio.getPixelSizeForLayoutSize(13),
         padding: PixelRatio.getPixelSizeForLayoutSize(2),
         fontFamily: font,
         fontSize: PixelRatio.getPixelSizeForLayoutSize(4.7),
+        textAlign: 'center',
         color: '#000'
     },
     alignRight: {

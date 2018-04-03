@@ -36,7 +36,7 @@ export default class Categories extends Component<Props>
             {pict: require('../Images/categories/shoes_img.png')},
             {pict: require('../Images/categories/dress_img.png')},
             {pict: require('../Images/categories/accessories_img.png')},
-            {pict: require('../Images/categories/trousers_img.png')}]
+            {pict: require('../Images/categories/all_img.png')}]
             .map((item, index) =>
             {
                 return {

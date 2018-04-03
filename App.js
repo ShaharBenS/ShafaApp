@@ -33,8 +33,9 @@ setInterval(()=>{
 },refreshLocationRate);
 
 let App = SwitchNavigator({
-    loginScreen: {screen: FacebookLogin},
     mainScreen: {screen: MainScreen},
+
+    loginScreen: {screen: FacebookLogin},
     },
 );
 
