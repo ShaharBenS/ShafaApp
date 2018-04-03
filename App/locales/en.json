@@ -1,0 +1,18 @@
+{
+  "categories": {
+    "pants_and_overalls": "Pants and Overalls",
+    "swimwear": "Swimwear",
+    "shirts": "Shirts",
+    "evening_clothes": "Evening Clothes",
+    "skirts": "Skirts",
+    "coats_and_jackets": "Coats and Jackets",
+    "sweaters": "Sweaters",
+    "shoes": "Shoes",
+    "dresses": "Dresses",
+    "accessories": "Accessories",
+    "everything": "Everything"
+  },
+  "user_profile": {
+    "title": "הפרופיל שלך"
+  }
+}

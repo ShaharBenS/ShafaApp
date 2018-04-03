@@ -1,0 +1,18 @@
+{
+  "categories": {
+    "pants_and_overalls": "מכנסיים ואוברולים",
+    "swimwear": "בגדי ים",
+    "shirts": "חולצות",
+    "evening_clothes": "בגדי ערב",
+    "skirts": "חצאיות",
+    "coats_and_jackets": "מעילים וג'קטים",
+    "sweaters": "סוודרים",
+    "shoes": "נעליים",
+    "dresses": "שמלות",
+    "accessories": "אקססוריז",
+    "everything": "הכל"
+  },
+  "user_profile": {
+    "title": "הפרופיל שלך"
+  }
+}
