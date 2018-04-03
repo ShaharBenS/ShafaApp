@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 
 let distanceController = require('../Controllers/DistanceController');
+let likesController = require('../Controllers/LikesController');
 
 let imgURI, profileURI, unlike, like;
 let brandNameShort;
@@ -26,7 +27,7 @@ export class GalleyItem extends Component<props>
         props.item.distance = '';
         super(props);
         //TODO: make sure the global.user.likedItems is always sorted
-        this.state = {like: global.user.likedItems.indexOf(props.item._id) > -1};
+        this.state = {like: props.initialLikeState};
 
         unlike = require('../icons/pngs/like_icon.png');
         like = require('../icons/pngs/like_icon_selected.png');
@@ -56,8 +57,30 @@ export class GalleyItem extends Component<props>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() =>
                     {
-                        //TODO: when liking
-                        this.setState({like: !this.state.like})
+                        if(this.state.like)
+                        {
+                            likesController.unlikeItem(this.props.item._id).then(res=>{
+                                this.props.item.likes = res;
+                                //TODO: insert so it stay sorted, and check if this _id is already there
+                                let index = global.user.likedItems.indexOf(this.props.item_id);
+                                if(index > -1){
+                                    global.user.likedItems.splice(index,1)
+                                }
+                                this.setState((previousState)=>{return {like: !previousState.like}})
+                            }).catch(err=>{
+                                Alert.alert("שגיאה",JSON.stringify(err))
+                            })
+                        }
+                        else{
+                            likesController.likeItem(this.props.item._id).then(res=>{
+                                this.props.item.likes = res;
+                                //TODO: insert so it stay sorted, and check if this _id is already there
+                                global.user.likedItems.push(this.props.item._id);
+                                this.setState((previousState)=>{return {like: !previousState.like}})
+                            }).catch(err=>{
+                                Alert.alert("שגיאה",JSON.stringify(err))
+                            });
+                        }
                     }
                     } activeOpacity={0.5} style={styles.like}>
                         <Image id={'like'} source={this.state.like ? like : unlike}/>

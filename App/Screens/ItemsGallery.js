@@ -28,19 +28,23 @@ import ItemPage from "./ItemPage";
 const itemsController = require('../Controllers/ItemsContoller');
 const maxChunksParallel = 50;
 const itemsPerChunk = 8;
-const dialogHeight = PixelRatio.getPixelSizeForLayoutSize(75);
-const textArray = ["הכי קרוב אלי", "מהזול ליקר", "מהיקר לזול", "החדש ביותר"];
+const dialogHeight = PixelRatio.getPixelSizeForLayoutSize(100);
+const textArray = ["ללא מיון", "הכי קרוב אלי", "מהזול ליקר", "מהיקר לזול", "החדש ביותר"];
 
 let currentChunk = 0;
-let selectedIndexToName = (index) => {
-    switch (index) {
+let selectedIndexToName = (index) =>
+{
+    switch (index)
+    {
         case 0:
-            return 'closest';
+            return 'random';
         case 1:
-            return 'cheapest';
+            return 'closest';
         case 2:
-            return 'expansive';
+            return 'cheapest';
         case 3:
+            return 'expansive';
+        case 4:
             return 'newest';
         default:
             return 'random';
@@ -48,54 +52,63 @@ let selectedIndexToName = (index) => {
 };
 
 
-class ItemsPage extends Component<Props> {
+class ItemsPage extends Component<Props>
+{
 
     static navigationOptions = {
         labelStyle: {display: 'none'},
         tabBarIcon: () => <Image source={require('../icons/pngs/categories_icon_gry.png')} style={styles.icon}/>
     };
 
-    constructor(props) {
+    constructor(props)
+    {
         super(props);
         const {navigate} = this.props.navigation;
 
         this.state = {
-            selectedIndex: 2,
-            disableArray: [true, false, true, true],
+            selectedIndex: 0,
+            disableArray: [false, true, true, true, true],
             items: []
         };
 
-        this.changeSort(-1);
+        this.changeSort(0);
 
     }
 
 
-    changeSort(index) {
+    changeSort(index)
+    {
         currentChunk = 0;
         let preference = selectedIndexToName(index);
         let location = preference === 'closest' ?
             [global.currentLocation.lng, global.currentLocation.lat] : undefined;
 
 
+
         itemsController.getItems(global.currentCategoryID, preference,
             0, itemsPerChunk,
             location)
-            .then(items => {
+            .then(items =>
+            {
                 this.setState({items: items});
             })
-            .catch(err => {
+            .catch(err =>
+            {
                 Alert.alert('שגיאה', JSON.stringify(err))
             });
     }
 
-    render() {
+    render()
+    {
         let {navigate} = this.props.navigation;
 
         let selectorsArray = [];
 
-        for (let i = 0; i < textArray.length; i++) {
+        for (let i = 0; i < textArray.length; i++)
+        {
             selectorsArray.push(<SelectorItem textToDisplay={textArray[i]} disableDot={this.state.disableArray[i]}
-                                              onPress={() => {
+                                              onPress={() =>
+                                              {
                                                   let disables = this.state.disableArray;
                                                   for (let j = 0; j < textArray.length; j++)
                                                       disables[j] = j !== i;
@@ -145,7 +158,9 @@ class ItemsPage extends Component<Props> {
                 <View style={styles.lineDelimiter}/>
 
                 <FlatList
-                    onEndReached={() => {
+                    onEndReached={() =>
+                    {
+                        //TODO: increase significantly the amount of items being fetched at the beginning. And add a 'next page' button when end reached
                         currentChunk++;
                         let preference = selectedIndexToName(this.state.selectedIndex);
                         itemsController.getItems(global.currentCategoryID, preference,
@@ -166,9 +181,12 @@ class ItemsPage extends Component<Props> {
                         return <GalleyItem onPressCallback={(_item) => {
                             global.currentItem = _item;
                             navigate('ItemPage')
-                        }} item={item.item}/>
+                        }} initialLikeState = {global.user.likedItems.indexOf(item.item._id) > -1}
+                                           item = {item.item}/>
                     }}
-                    keyExtractor={(items, index) => index}
+                    keyExtractor={(item, index) => {
+                        return item._id;
+                    }}
                 />
 
 
